@@ -200,10 +200,9 @@ The parser is sensitive to markdown formatting. If Claude returns `**7**` instea
 
 Explicit format validation before parsing, retry on malformed response (max 1 retry), and a visible warning to the user when a score couldn't be extracted. These are post-MVP improvements — the current behaviour is acceptable for single-user MVP use but would need hardening before a multi-user production release.
 
----
-
-*Part of Cara Coach product documentation. See also: [Feature Inventory](./feature-inventory.md) · [Executive Language Scoring](./executive-language-scoring.md) · [Product Brief](./product-brief.md)*
-
----
 
 ![footer](../cara-coach-int-footer.svg)
+
+*Part of Cara Coach product documentation. See also: [Product Brief](./product-brief.md) · [Feature Inventory](./feature-inventory.md) · [Executive Language Scoring](./executive-language-scoring.md)*
+
+
