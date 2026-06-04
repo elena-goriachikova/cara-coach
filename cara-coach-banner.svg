@@ -1,0 +1,11 @@
+<svg width="100%" viewBox="0 0 680 160" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Cara Coach repository banner</title>
+<desc>Mint background banner for Cara Coach repo</desc>
+
+<rect width="680" height="160" fill="#E0F2F1" rx="0"/>
+<rect x="0" y="0" width="680" height="7" fill="#00897B" rx="0"/>
+
+<text x="340" y="86" text-anchor="middle" font-family="Georgia, serif" font-size="62" font-weight="600" fill="#00897B" letter-spacing="1">Cara Coach</text>
+
+<text x="340" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#1A1A1A" letter-spacing="3">AI-POWERED INTERVIEW PREPARATION AGENT</text>
+</svg>
