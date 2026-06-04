@@ -6,7 +6,7 @@
 
 Elena Goriachikova · June 2026 · Confidential
 
-**01 Overview**
+##  **01 Overview**
 
 Cara Coach is an AI-powered interview preparation agent that simulates
 real job interviews and delivers structured, personalised feedback. It
@@ -28,7 +28,7 @@ SQLite · Flask
 
 **Author:** Elena Goriachikova, Senior PM/BA → AI Agent Strategist
 
-**02 Problem**
+##  **02 Problem**
 
 Senior professionals preparing for AI-strategy interviews face a
 specific gap: existing tools give generic feedback, not personalised
@@ -51,7 +51,7 @@ coaching grounded in their actual experience.
 > **→** No session analytics - no way to track progress over time or
 > identify patterns
 
-**03 Solution**
+##  **03 Solution**
 
 Cara Coach solves this by combining three layers of intelligence:
 
@@ -68,7 +68,7 @@ The result: preparation that feels like a real interview, not a quiz.
 The user practices under realistic conditions, gets honest feedback, and
 improves measurably over time.
 
-**04 Target Users**
+##  **04 Target Users**
 
 **Primary (MVP)**
 
@@ -91,7 +91,7 @@ improves measurably over time.
 Note: MVP is single-user (no auth). Multi-user architecture is designed
 and ready - requires hosting and authentication layer to activate.
 
-**05 Core Features - MVP**
+##  **05 Core Features - MVP**
 
 **Telegram Bot**
 
@@ -211,7 +211,7 @@ answers). Duration/pace estimated from word count.
 > **→** API keys via macOS Keychain - no .env file, secrets never in
 > code
 
-**06 Feedback Modes**
+##  **06 Feedback Modes**
 
   ------------------------------------------------------------------------
   **Mode**   **COACH**                      **MIRROR**
@@ -228,7 +228,7 @@ answers). Duration/pace estimated from word count.
 Mode is set once per project in the web dashboard and applies to all
 sessions for that vacancy.
 
-**07 CV Personalisation Engine**
+##  **07 CV Personalisation Engine**
 
 At session start, Cara runs a one-time analysis that extracts a
 structured CV catalog from the user\'s CV:
@@ -257,7 +257,7 @@ This catalog powers two things:
 The catalog is cached and reused across sessions. It is only regenerated
 if the CV or JD actually changes - not on every save.
 
-**08 Session Flow**
+##  **08 Session Flow**
 
   --------------------------------------------------------------------------
   **\#**   **Step**               **Detail**
@@ -305,7 +305,7 @@ if the CV or JD actually changes - not on every save.
                                   auto-saved
   --------------------------------------------------------------------------
 
-**09 Post-MVP Roadmap**
+##  **09 Post-MVP Roadmap**
 
 **Authentication & Hosting**
 
@@ -338,7 +338,7 @@ if the CV or JD actually changes - not on every save.
 >
 > **→** Suggested focus areas based on session history
 
-**10 Technical Architecture**
+##  **10 Technical Architecture**
 
   ---------------------------------------------------------------------------
   **Layer**          **Technology**        **Purpose**
@@ -368,7 +368,7 @@ if the CV or JD actually changes - not on every save.
                                            lightweight, readable, LLM-ready
   ---------------------------------------------------------------------------
 
-**11 Success Metrics**
+##  **11 Success Metrics**
 
 Cara Coach measures improvement across three layers: behavioural change,
 quantitative score trends, and real-world outcome.
@@ -424,7 +424,7 @@ quantitative score trends, and real-world outcome.
 This is the strongest signal but requires voluntary user follow-up. To
 be tracked post-MVP via optional session tagging (\'Got the offer\').
 
-**12 Competitive Landscape**
+##  **12 Competitive Landscape**
 
 The AI interview preparation market is growing rapidly. Most tools focus
 on question generation and generic content feedback. Cara Coach occupies
@@ -474,7 +474,7 @@ personalisation, Executive Language scoring, voice input on mobile,
 session analytics, and export for external pattern analysis - in one
 product.
 
-**13 Vision**
+##  **13 Vision**
 
 Cara Coach starts as an interview preparation tool. The longer arc is
 bigger.
