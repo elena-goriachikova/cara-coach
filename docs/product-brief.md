@@ -258,52 +258,13 @@ The catalog is cached and reused across sessions. It is only regenerated
 if the CV or JD actually changes - not on every save.
 
 ##  **08 Session Flow**
-
-  --------------------------------------------------------------------------
-  **\#**   **Step**               **Detail**
-  -------- ---------------------- ------------------------------------------
-  **1**    **Setup**              User creates vacancy in web dashboard:
-                                  uploads CV, pastes JD, selects language
-                                  and feedback mode
-
-  **2**    **Start**              User sends /start in Telegram. Bot checks
-                                  cache - instant start if cached, or runs
-                                  3-step analysis (CV gaps → questions → CV
-                                  catalog)
-
-  **3**    **Question delivery**  Questions delivered with domain
-                                  announcement and progress counter. 6
-                                  questions total: 2 Soft / 2 Hard / 2
-                                  Behavioural
-
-  **4**    **Answer**             User answers by voice (Whisper
-                                  transcription) or text. SKIP available at
-                                  any point
-
-  **5**    **Score card**         Streaming feedback: Score + Executive
-                                  Language score. Summary visible
-                                  immediately
-
-  **6**    **Details (optional)** Full structured feedback: Positive signal
-                                  · Red flag · Improvement tips · STAR tip ·
-                                  Exec language with verbatim rewrites ·
-                                  Speech analysis
-
-  **7**    **Ideal Answer         CV-grounded model answer. Only available
-           (optional)**           after viewing Details
-
-  **8**    **Retry (optional)**   User re-answers immediately while insight
-                                  is fresh. Score delta shown. Retry count
-                                  tracked separately
-
-  **9**    **Next question**      Moves to next question. Button states
-                                  reset
-
-  **10**   **Session complete**   Overall score · per-domain averages ·
-                                  strongest/weakest question · final
-                                  120-word debrief · .md transcript
-                                  auto-saved
-  --------------------------------------------------------------------------
+| # | Step | Detail |
+|---|------|--------|
+| 1 | **Setup** | User creates vacancy in web dashboard: uploads CV, pastes JD, selects language and feedback mode |
+| 2 | **Start** | User sends /start in Telegram. Bot checks cache — instant start if cached, or runs 3-step analysis (CV gaps → questions → CV catalog) |
+| 3 | **Question delivery** | Questions delivered with domain announcement and progress counter. 6 questions total: 2 Soft / 2 Hard / 2 Behavioural |
+| 4 | **Answer** | User answers by voice (Whisper transcription) or text. SKIP available at any point |
+| 5 | **Score card** | Streaming feedback: Score + Executive Language score. Summary visible immedi
 
 ##  **09 Post-MVP Roadmap**
 
