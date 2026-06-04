@@ -397,8 +397,11 @@ bigger.
 **The vision: an agent that knows your career better than you do - and
 prepares you for what\'s next before you ask.**
 
+---
+
 *Part of Cara Coach product documentation. See also: [Feature Inventory](./feature-inventory.md) · [Executive Language Scoring](./executive-language-scoring.md) · [Product Brief](./product-brief.md)*
 
+---
 
 ![footer](../cara-coach-int-footer.svg)
 
