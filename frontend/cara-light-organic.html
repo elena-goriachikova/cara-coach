@@ -1,0 +1,2805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cara Coach — New Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:          #004E98;
+    --ink-hover:    #003A7A;
+    --accent:       #FF6700;
+    --accent-hover: #E55E00;
+    --accent-light: #FFE8D0;
+    --muted:        #5C5C5C;
+    --muted-light:  #888888;
+    --surface:      #F7F7F7;
+    --divider:      #CCCCCC;
+    --white:        #ffffff;
+    --blue:         #3A6EA5;
+    --blue-light:   #D6E8F5;
+    --shadow:       0 1px 3px rgba(0,78,152,.08), 0 4px 16px rgba(0,78,152,.06);
+    --shadow-md:    0 4px 12px rgba(0,78,152,.12), 0 12px 32px rgba(0,78,152,.08);
+    /* Legacy aliases */
+    --green:        #3A6EA5;
+    --green-light:  #D6E8F5;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: #F4F6F9;
+    color: var(--ink);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* App wrapper fills the full remaining space */
+  #app.visible {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* ────────────────────────────────────────
+     TOP BAR
+  ──────────────────────────────────────── */
+  .topbar {
+    background: var(--white);
+    border-bottom: none;
+    height: 60px;
+    padding: 0 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    z-index: 200;
+    box-shadow: 0 1px 8px rgba(0,78,152,.06);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, var(--accent) 0%, #FF8C35 100%);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-size: 17px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(255,103,0,.3);
+  }
+
+  .logo-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -.3px;
+  }
+
+  .topbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-link {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    font-weight: 400;
+  }
+  .nav-link:hover { background: var(--surface); color: var(--ink); }
+  .nav-link.active { color: var(--ink); font-weight: 600; background: var(--surface); }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    margin-left: 8px;
+    cursor: pointer;
+    letter-spacing: .5px;
+    transition: opacity .15s;
+  }
+  .avatar:hover { opacity: .85; }
+
+  /* ────────────────────────────────────────
+     STEP PROGRESS BAR
+  ──────────────────────────────────────── */
+  .steps-bar {
+    background: #F4F6F9;
+    border-bottom: none;
+    padding: 16px 36px 12px;
+    flex-shrink: 0;
+  }
+
+  .steps {
+    display: flex;
+    align-items: center;
+    max-width: 860px;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    position: relative;
+    min-width: 0;
+  }
+
+  /* connector line */
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 30px;
+    right: 4px;
+    top: 11px;
+    height: 1.5px;
+    background: var(--divider);
+    z-index: 0;
+    transition: background .3s;
+  }
+  .step.done::after { background: var(--blue); }
+
+  .step-bubble {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--divider);
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--white);
+    color: var(--muted);
+    flex-shrink: 0;
+    z-index: 1;
+    position: relative;
+    transition: all .25s;
+  }
+  .step.active .step-bubble {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+  .step.done .step-bubble {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--white);
+  }
+
+  .step-label {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color .25s;
+    font-weight: 400;
+  }
+  .step.active .step-label { color: var(--accent); font-weight: 600; }
+  .step.done  .step-label  { color: var(--blue); font-weight: 500; }
+
+  /* ────────────────────────────────────────
+     MAIN LAYOUT
+  ──────────────────────────────────────── */
+  .main { display: flex; flex: 1; overflow: hidden; }
+
+  /* ────────────────────────────────────────
+     SIDEBAR
+  ──────────────────────────────────────── */
+  .sidebar {
+    width: 200px;
+    background: var(--white);
+    border-right: none;
+    padding: 28px 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    overflow-y: auto;
+    box-shadow: 1px 0 8px rgba(0,78,152,.05);
+  }
+
+  .sidebar-section { padding: 0 16px; }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .new-project-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, box-shadow .15s, transform .1s;
+    box-shadow: 0 2px 8px rgba(255,103,0,.25);
+  }
+  .new-project-btn:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 3px 12px rgba(255,103,0,.35);
+    transform: translateY(-1px);
+  }
+  .new-project-btn:active { transform: translateY(0); }
+
+  .project-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .proj-item {
+    padding: 9px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    transition: background .12s;
+  }
+  .proj-item:hover { background: var(--surface); }
+  .proj-item.active { background: var(--blue-light); border-left: 3px solid var(--blue); padding-left: 9px; }
+
+  .proj-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .proj-role { font-size: 11px; color: var(--muted); }
+  .proj-badge {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: .3px;
+  }
+  .proj-badge.active   { background: var(--green-light); color: var(--green); }
+  .proj-badge.new      { background: var(--accent-light); color: var(--accent); }
+  .proj-badge.closed   { background: var(--divider); color: var(--muted); }
+  .proj-badge.cancelled { background: #f5e8e8; color: #a04040; text-decoration: line-through; }
+
+  /* ────────────────────────────────────────
+     CONTENT AREA
+  ──────────────────────────────────────── */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* ────────────────────────────────────────
+     SCREENS
+  ──────────────────────────────────────── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ────────────────────────────────────────
+     PAGE HEADER
+  ──────────────────────────────────────── */
+  .page-crumb {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .page-crumb .crumb-active { color: var(--accent); }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+    line-height: 1.25;
+  }
+  .page-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 28px;
+  }
+
+  /* ────────────────────────────────────────
+     FORM CARD
+  ──────────────────────────────────────── */
+  .form-card {
+    background: var(--white);
+    border: none;
+    border-radius: 0;
+    padding: 40px 44px;
+    max-width: 860px;
+    box-shadow: 0 2px 16px rgba(0,78,152,.07), 0 8px 40px rgba(0,78,152,.05);
+  }
+
+  .form-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent);
+    line-height: 1.4;
+  }
+
+  .form-divider {
+    border: none;
+    border-top: 1px solid #F0F0F0;
+    margin: 32px 0;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-group { margin-bottom: 18px; }
+  .form-group:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .label-opt {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 5px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #F4F6F9;
+    outline: none;
+    transition: background .18s, box-shadow .18s;
+    -webkit-appearance: none;
+  }
+  input::placeholder, textarea::placeholder { color: #AAAAAA; font-weight: 300; }
+  input:focus, select:focus, textarea:focus {
+    background: #EEF2F8;
+    box-shadow: 0 0 0 2.5px rgba(255,103,0,.4);
+    outline: none;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
+  }
+
+  select { cursor: pointer; }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* ────────────────────────────────────────
+     FILE UPLOAD
+  ──────────────────────────────────────── */
+  .upload-zone {
+    border: 2px dashed #D0D8E4;
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    background: #F4F6F9;
+    transition: all .2s;
+  }
+  .upload-zone:hover {
+    border-color: var(--accent);
+    background: #FFF3E8;
+    box-shadow: 0 0 0 4px rgba(255,103,0,.06);
+  }
+
+  .upload-icon { font-size: 28px; margin-bottom: 7px; }
+  .upload-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+  .upload-sub   { font-size: 12px; color: var(--muted); font-weight: 300; }
+
+  .upload-formats {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .fmt {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--divider);
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--blue-light);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 16px;
+    box-shadow: 0 0 0 1.5px rgba(58,110,165,.2);
+  }
+  .file-type-icon { font-size: 22px; }
+  .file-info { flex: 1; text-align: left; }
+  .file-name { font-size: 13px; font-weight: 500; }
+  .file-size { font-size: 11px; color: var(--muted); }
+  .file-remove {
+    font-size: 18px;
+    color: var(--muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background .12s;
+  }
+  .file-remove:hover { background: var(--surface); color: var(--ink); }
+
+  /* ────────────────────────────────────────
+     MODE SELECTOR
+  ──────────────────────────────────────── */
+  .mode-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .mode-card {
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+    user-select: none;
+    background: #F4F6F9;
+  }
+  .mode-card:hover { background: #EEF2F8; }
+  .mode-card.sel   {
+    border-color: var(--ink);
+    background: var(--white);
+    box-shadow: 0 2px 12px rgba(0,78,152,.1);
+  }
+
+  .mode-card input[type="radio"] {
+    position: absolute; opacity: 0; pointer-events: none;
+  }
+
+  .mode-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .mode-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: .5px;
+  }
+
+  .radio-ring {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--divider);
+    display: grid;
+    place-items: center;
+    transition: all .2s;
+    flex-shrink: 0;
+  }
+  .mode-card.sel .radio-ring {
+    border-color: var(--ink);
+    background: var(--ink);
+  }
+  .radio-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .mode-card.sel .radio-dot { opacity: 1; }
+
+  .mode-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .mode-pill.mirror { background: var(--ink);    color: white; }
+  .mode-pill.coach  { background: var(--accent);  color: white; }
+
+  .mode-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .mode-example {
+    font-size: 11.5px;
+    font-style: italic;
+    color: var(--ink);
+    border-left: 2px solid var(--divider);
+    padding-left: 10px;
+    line-height: 1.55;
+    transition: border-color .2s;
+  }
+  .mode-card.sel .mode-example { border-color: var(--accent); }
+
+  /* ────────────────────────────────────────
+     FORM FOOTER
+  ──────────────────────────────────────── */
+  .form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid var(--divider);
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 260px;
+  }
+
+  .footer-actions { display: flex; gap: 10px; align-items: center; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all .18s;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--divider);
+    transition: all .15s;
+  }
+  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); background: var(--surface); }
+
+  .btn-primary {
+    background: var(--ink);
+    color: white;
+    padding: 11px 28px;
+    box-shadow: 0 2px 8px rgba(0,78,152,.25);
+    transition: all .15s;
+  }
+  .btn-primary:hover {
+    background: var(--ink-hover);
+    box-shadow: 0 3px 12px rgba(0,78,152,.35);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-outline-accent {
+    background: transparent;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    font-size: 13px;
+    padding: 9px 16px;
+    transition: all .15s;
+  }
+  .btn-outline-accent:hover { background: var(--accent); color: white; box-shadow: 0 2px 8px rgba(255,103,0,.25); }
+
+  /* ────────────────────────────────────────
+     LOADING OVERLAY (Processing animation)
+  ──────────────────────────────────────── */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,78,152,.45);
+    z-index: 500;
+    place-items: center;
+  }
+  .loading-overlay.show { display: grid; }
+
+  .loading-card {
+    background: white;
+    border-radius: 12px;
+    padding: 40px 48px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,78,152,.2);
+    max-width: 340px;
+    width: 90%;
+  }
+
+  .spinner {
+    width: 44px;
+    height: 44px;
+    border: 3px solid var(--divider);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .loading-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .loading-steps {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+  }
+  .loading-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .loading-step.done-step { color: var(--green); }
+  .loading-step.current-step { color: var(--ink); font-weight: 500; }
+  .step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--divider);
+    flex-shrink: 0;
+  }
+  .done-step   .step-dot { background: var(--green); }
+  .current-step .step-dot { background: var(--accent); }
+
+  /* ────────────────────────────────────────
+     QR SUCCESS SCREEN
+  ──────────────────────────────────────── */
+  .success-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--blue-light);
+    border: 1.5px solid rgba(58,110,165,.3);
+    border-radius: 0;
+    margin-bottom: 24px;
+    max-width: 860px;
+  }
+  .success-banner-icon { font-size: 20px; }
+  .success-banner-text { font-size: 13.5px; font-weight: 600; color: var(--blue); }
+
+  .qr-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    max-width: 860px;
+    align-items: stretch;
+  }
+
+  /* Left: project card */
+  .project-summary-card {
+    background: var(--white);
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,78,152,.07), 0 8px 40px rgba(0,78,152,.05);
+  }
+
+  .pscard-header {
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--divider);
+    background: var(--ink);
+    color: white;
+  }
+  .pscard-project-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .pscard-company { font-size: 13px; opacity: .7; }
+
+  .pscard-body { padding: 20px 24px; }
+
+  .pscard-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 0;
+    border-bottom: 1px solid #F2F2F2;
+    font-size: 13px;
+  }
+  .pscard-row:last-child { border-bottom: none; }
+  .pscard-key { color: var(--muted); font-weight: 400; }
+  .pscard-val { font-weight: 500; color: var(--ink); }
+
+  .mode-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .mode-badge.coach  { background: var(--accent); color: white; }
+  .mode-badge.mirror { background: var(--ink); color: white; }
+
+  .pscard-footer {
+    padding: 14px 24px;
+    background: var(--surface);
+    border-top: 1px solid var(--divider);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Right: QR card */
+  .qr-card {
+    background: var(--white);
+    border: none;
+    border-radius: 16px;
+    padding: 32px 28px;
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(0,78,152,.07), 0 8px 40px rgba(0,78,152,.05);
+  }
+
+  .qr-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .qr-card-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+
+  .qr-frame {
+    display: inline-block;
+    padding: 16px;
+    border: 2.5px solid var(--ink);
+    border-radius: 10px;
+    background: white;
+    margin-bottom: 16px;
+  }
+
+  /* Telegram connect card */
+  .qr-svg { display: block; }
+
+  .qr-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    line-height: 1.55;
+  }
+
+  .qr-alt-link {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .qr-alt-link:hover { text-decoration: underline; }
+
+  /* What's next strip */
+  .next-steps {
+    max-width: 860px;
+    margin-top: 20px;
+    background: var(--white);
+    border: none;
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 16px rgba(0,78,152,.07), 0 8px 40px rgba(0,78,152,.05);
+  }
+  .next-steps-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent);
+  }
+  .next-steps-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .ns-item { display: flex; gap: 12px; align-items: flex-start; }
+  .ns-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .ns-text-title { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+  .ns-text-sub   { font-size: 12px; color: var(--muted); font-weight: 300; line-height: 1.55; }
+
+  /* ────────────────────────────────────────
+     FOCUS STATES — keyboard accessibility
+  ──────────────────────────────────────── */
+  :focus-visible {
+    outline: 2.5px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2.5px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--divider); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A0A0A0; }
+
+  /* ────────────────────────────────────────
+     AUTH SCREENS
+  ──────────────────────────────────────── */
+  #auth-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    background: var(--surface);
+  }
+  #auth-gate.hidden { display: none; }
+
+  /* Left branding panel */
+  .auth-panel-left {
+    width: 42%;
+    background: linear-gradient(150deg, #004E98 0%, #003A7A 60%, #002A58 100%);
+    padding: 48px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-panel-left::before {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    right: -80px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(255, 103, 0, 0.12);
+    pointer-events: none;
+  }
+  .auth-panel-left::after {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 103, 0, 0.07);
+    pointer-events: none;
+  }
+
+  .auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .auth-logo-mark {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--accent) 0%, #FF8C35 100%);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(255,103,0,.35);
+  }
+  .auth-logo-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .auth-hero {
+    position: relative;
+    z-index: 1;
+  }
+  .auth-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+  .auth-hero-title em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .auth-hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,.6);
+    font-weight: 300;
+    line-height: 1.65;
+    margin-bottom: 32px;
+  }
+
+  .auth-features {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .auth-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .auth-feature-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(255,103,0,.2);
+    border: 1px solid rgba(255,103,0,.4);
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .auth-feature-text {
+    font-size: 13px;
+    color: rgba(255,255,255,.75);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+  .auth-feature-text strong { color: white; font-weight: 500; }
+
+  .auth-quote {
+    position: relative;
+    z-index: 1;
+    border-left: 2px solid var(--accent);
+    padding-left: 16px;
+  }
+  .auth-quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(255,255,255,.7);
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  .auth-quote-author {
+    font-size: 12px;
+    color: rgba(255,255,255,.4);
+    font-weight: 300;
+  }
+
+  /* Right form panel */
+  .auth-panel-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    overflow-y: auto;
+  }
+
+  .auth-form-wrap {
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .auth-screen-inner { display: none; }
+  .auth-screen-inner.active { display: block; }
+
+  .auth-form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .auth-form-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 28px;
+    line-height: 1.55;
+  }
+
+  .auth-form-group { margin-bottom: 16px; }
+  .auth-form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .auth-form-group input,
+  .auth-form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: #F4F6F9;
+    outline: none;
+    transition: background .18s, box-shadow .18s;
+  }
+  .auth-form-group input::placeholder { color: #AAAAAA; font-weight: 300; }
+
+  .pw-wrap { position: relative; }
+  .pw-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 16px;
+    padding: 4px;
+    line-height: 1;
+  }
+  .pw-toggle:hover { color: var(--ink); }
+
+  .auth-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    font-weight: 300;
+  }
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--divider);
+  }
+
+  .auth-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .18s;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(255,103,0,.3);
+    letter-spacing: .2px;
+  }
+  .auth-submit:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 4px 14px rgba(255,103,0,.4);
+    transform: translateY(-1px);
+  }
+  .auth-submit:active { transform: translateY(0); }
+
+  .auth-switch {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .auth-switch a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .auth-switch a:hover { text-decoration: underline; }
+
+  .auth-forgot {
+    text-align: right;
+    margin-top: -8px;
+    margin-bottom: 16px;
+  }
+  .auth-forgot a {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .auth-forgot a:hover { color: var(--accent); }
+
+  .auth-terms {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    font-weight: 300;
+    line-height: 1.55;
+    margin-top: 16px;
+  }
+  .auth-terms a { color: var(--accent); text-decoration: none; }
+
+  /* Success tick after signup */
+  .auth-success-wrap {
+    text-align: center;
+    padding: 32px 0;
+  }
+  .auth-success-tick {
+    font-size: 52px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .auth-success-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .auth-success-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  /* ── APP WRAPPER (hidden until auth) ── */
+  #app {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
+  #app.visible {
+    display: flex;
+  }
+
+  /* ═══════════════════════════════════════
+     LIGHT ORGANIC THEME OVERRIDE
+     Inspired by: airy, mint, bold-minimal
+  ═══════════════════════════════════════ */
+
+  :root {
+    --ink:          #0A0A0A;
+    --ink-hover:    #2A2A2A;
+    --accent:       #169B82;
+    --accent-hover: #117A67;
+    --accent-light: #C2F0E8;
+    --muted:        #4A4A4A;
+    --muted-light:  #777777;
+    --surface:      #BAF0E4;
+    --divider:      #9ED9CE;
+    --white:        #FFFFFF;
+    --blue:         #169B82;
+    --blue-light:   #D4F4EE;
+    --shadow:       0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+    --shadow-md:    0 4px 20px rgba(0,0,0,.08), 0 12px 40px rgba(0,0,0,.05);
+    --green:        #169B82;
+    --green-light:  #D4F4EE;
+  }
+
+  body { background: #BAF0E4 !important; }
+
+  /* Topbar */
+  .topbar {
+    background: rgba(255,255,255,.85) !important;
+    backdrop-filter: blur(12px);
+    box-shadow: none !important;
+  }
+  .logo-name { font-weight: 800; letter-spacing: -.5px; }
+
+  /* Steps bar */
+  .steps-bar { background: transparent !important; border-bottom: none !important; }
+  .step-label { position: relative; z-index: 2; background: #BAF0E4; padding: 0 4px; }
+
+  /* Sidebar */
+  .sidebar {
+    background: rgba(255,255,255,.7) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 1px 0 0 rgba(0,0,0,.06) !important;
+  }
+
+  /* Content area */
+  .content { background: transparent !important; }
+
+  /* Page header */
+  .page-title {
+    font-size: 30px !important;
+    font-weight: 800 !important;
+    letter-spacing: -.5px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Form card */
+  .form-card {
+    background: #FFFFFF !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,.07), 0 16px 48px rgba(0,0,0,.04) !important;
+    border-radius: 0 !important;
+  }
+
+  /* Inputs - clean mint fill */
+  input[type="text"],
+  input[type="date"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    background: #EEF9F7 !important;
+    color: #0A0A0A !important;
+    border-radius: 10px !important;
+  }
+  input:focus, select:focus, textarea:focus {
+    background: #E2F6F2 !important;
+    box-shadow: 0 0 0 2.5px rgba(22,155,130,.35) !important;
+  }
+  .auth-form-group input,
+  .auth-form-group select {
+    background: #EEF9F7 !important;
+    color: #0A0A0A !important;
+  }
+
+  /* Primary buttons — bold black like reference */
+  .btn-primary {
+    background: #0A0A0A !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: -.1px !important;
+    box-shadow: none !important;
+    padding: 13px 32px !important;
+  }
+  .btn-primary:hover {
+    background: #2A2A2A !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,.18) !important;
+  }
+
+  .new-project-btn {
+    background: #0A0A0A !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+  }
+  .new-project-btn:hover {
+    background: #2A2A2A !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.2) !important;
+  }
+
+  /* Auth submit */
+  .auth-submit {
+    background: #0A0A0A !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+  }
+  .auth-submit:hover {
+    background: #2A2A2A !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.2) !important;
+  }
+
+  /* Mode cards */
+  .mode-card { background: #EEF9F7 !important; border-radius: 14px !important; border-color: transparent !important; }
+  .mode-card:hover { background: #E2F6F2 !important; }
+  .mode-card.sel {
+    background: #FFFFFF !important;
+    border-color: #0A0A0A !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,.1) !important;
+  }
+
+  /* Upload zone */
+  .upload-zone {
+    background: #EEF9F7 !important;
+    border-color: #9ED9CE !important;
+    border-radius: 14px !important;
+  }
+  .upload-zone:hover {
+    background: #E2F6F2 !important;
+    border-color: #169B82 !important;
+    box-shadow: 0 0 0 4px rgba(22,155,130,.08) !important;
+  }
+
+  /* Sidebar items */
+  .proj-item.active {
+    background: #D4F4EE !important;
+    border-left-color: #169B82 !important;
+  }
+  .proj-item:hover { background: rgba(255,255,255,.5) !important; }
+
+  /* Auth gate */
+  #auth-gate { background: #BAF0E4 !important; }
+  .auth-panel-left {
+    background: linear-gradient(150deg, #063D31 0%, #042E25 60%, #021F19 100%) !important;
+  }
+  .auth-logo-mark {
+    background: linear-gradient(135deg, #169B82 0%, #22C0A0 100%) !important;
+    box-shadow: 0 3px 10px rgba(22,155,130,.4) !important;
+  }
+  .auth-panel-right { background: #BAF0E4 !important; }
+  .auth-form-wrap {
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 36px;
+  }
+
+  /* Cards on QR screen — no rounded corners */
+  .project-summary-card, .qr-card, .next-steps {
+    background: #FFFFFF !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+  .success-banner, .returning-banner {
+    border-radius: 0 !important;
+  }
+
+  /* File row */
+  .file-row { background: #EEF9F7 !important; box-shadow: 0 0 0 1.5px rgba(22,155,130,.2) !important; }
+
+  /* Success banner */
+  .success-banner { background: #D4F4EE !important; border-color: rgba(22,155,130,.25) !important; }
+  .success-banner-text { color: #169B82 !important; }
+
+  /* Form footer border */
+  .form-footer { border-top-color: #E0F5F1 !important; }
+
+  /* Loading card */
+  .loading-card { background: #FFFFFF !important; }
+  .loading-overlay { background: rgba(186,240,228,.6) !important; backdrop-filter: blur(4px); }
+
+  /* Step bubble active */
+  .step.active .step-bubble {
+    background: #0A0A0A !important;
+    border-color: #0A0A0A !important;
+    box-shadow: 0 0 0 3px rgba(0,0,0,.1) !important;
+  }
+  .step.active .step-label { color: #0A0A0A !important; }
+  .step.done .step-bubble { background: #169B82 !important; border-color: #169B82 !important; }
+  .step.done .step-label { color: #169B82 !important; }
+  .step.done::after { background: #169B82 !important; }
+
+  /* Mode pills */
+  .mode-pill.mirror { background: #0A0A0A !important; }
+  .mode-pill.coach { background: #169B82 !important; }
+
+  /* Outline button */
+  .btn-outline-accent { color: #169B82 !important; border-color: #169B82 !important; }
+  .btn-outline-accent:hover { background: #169B82 !important; }
+
+  /* ── SESSIONS PANEL ── */
+  .sessions-card {
+    background: #FFFFFF;
+    border-radius: 0;
+    box-shadow: 0 4px 24px rgba(0,0,0,.07), 0 16px 48px rgba(0,0,0,.04);
+    padding: 24px 28px;
+  }
+  .sessions-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .sessions-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: #0A0A0A;
+    padding-left: 10px;
+    border-left: 3px solid #169B82;
+  }
+
+  /* Metrics */
+  .sess-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .sess-metric {
+    background: #D4F4EE;
+    border-radius: 0;
+    padding: 12px 14px;
+  }
+  .sess-metric-label { font-size: 11px; color: #4A4A4A; margin-bottom: 4px; }
+  .sess-metric-value { font-size: 24px; font-weight: 600; color: #0A0A0A; line-height: 1; }
+  .sess-metric-delta { font-size: 11px; margin-top: 4px; color: #169B82; font-weight: 500; }
+
+  /* Bars */
+  .sess-bars { margin-bottom: 20px; }
+  .sess-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .sess-bar-row:last-child { margin-bottom: 0; }
+  .sess-bar-label { font-size: 12px; color: #4A4A4A; width: 88px; flex-shrink: 0; }
+  .sess-bar-track {
+    flex: 1;
+    height: 7px;
+    border-radius: 4px;
+    background: #D4F4EE;
+    overflow: hidden;
+  }
+  .sess-bar-fill { height: 100%; border-radius: 4px; transition: width .5s ease; }
+  .sess-bar-val { font-size: 12px; font-weight: 600; color: #0A0A0A; width: 28px; text-align: right; }
+
+  /* Table */
+  .sess-table-wrap { overflow-x: auto; }
+  .sess-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .sess-table th {
+    font-size: 11px;
+    font-weight: 600;
+    color: #4A4A4A;
+    text-align: left;
+    padding: 6px 10px;
+    border-bottom: 1.5px solid #9ED9CE;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .sess-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #D4F4EE;
+    color: #0A0A0A;
+    font-size: 12px;
+  }
+  .sess-table tr:last-child td { border-bottom: none; }
+  .sess-table .muted { color: #4A4A4A; }
+
+  /* Score pills */
+  .sess-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .pill-hi  { background: #C2F0E8; color: #0D6B58; }
+  .pill-mid { background: #FFF0CC; color: #7A5000; }
+  .pill-lo  { background: #FCEBEB; color: #791F1F; }
+
+  /* Active state for Sessions toggle button */
+  .sessions-toggle-btn.open {
+    background: #D4F4EE !important;
+    border-color: #169B82 !important;
+    color: #169B82 !important;
+  }
+</style>
+</head>
+<body>
+
+<!-- Skip to content for screen readers -->
+<a href="#main-content" style="position:absolute;left:-9999px;top:0;z-index:9999;padding:8px 16px;background:var(--accent);color:white;font-weight:600;border-radius:0 0 6px 0;text-decoration:none;" onfocus="this.style.left='0'" onblur="this.style.left='-9999px'">Skip to main content</a>
+
+<!-- ════════════════════════════════════════
+  AUTH GATE (shown before main app)
+════════════════════════════════════════ -->
+<div id="auth-gate">
+
+  <!-- LEFT PANEL: branding -->
+  <div class="auth-panel-left">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">🎯</div>
+      <span class="auth-logo-name">Cara Coach</span>
+    </div>
+
+    <div class="auth-hero">
+      <div class="auth-hero-title">Your interview coach.<br><em>Honest feedback.</em><br>Real results.</div>
+      <div class="auth-hero-sub">Cara analyses your CV and the job description — then puts you through a real mock interview via Telegram. Scored, specific, actionable.</div>
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature-dot">🎯</div>
+          <div class="auth-feature-text"><strong>9 tailored questions</strong> — generated from your CV and the specific job, not generic templates.</div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-dot">📊</div>
+          <div class="auth-feature-text"><strong>Scored sandwich feedback</strong> — what worked, what to fix, score out of 10. Every answer.</div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-dot">💬</div>
+          <div class="auth-feature-text"><strong>Voice or text via Telegram</strong> — free, no scheduling, works on any device. Your phone, your pace.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-quote">
+      <div class="auth-quote-text">"I left every interview thinking it went well — then got a rejection with no explanation. Cara showed me exactly what I was missing."</div>
+      <div class="auth-quote-author">— Senior PM, preparing for FAANG interviews</div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL: form -->
+  <div class="auth-panel-right">
+    <div class="auth-form-wrap">
+
+      <!-- ── SIGN UP ── -->
+      <div class="auth-screen-inner active" id="auth-signup">
+        <div class="auth-form-title">Create your account</div>
+        <div class="auth-form-sub">Free to start. No credit card. Cancel anytime.</div>
+
+        <div class="auth-form-group">
+          <label for="su-name">Your name</label>
+          <input type="text" id="su-name" placeholder="Your name">
+        </div>
+        <div class="auth-form-group">
+          <label for="su-email">Email address</label>
+          <input type="email" id="su-email" placeholder="elena@example.com">
+        </div>
+        <div class="auth-form-group">
+          <label for="su-pw">Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="su-pw" placeholder="At least 8 characters">
+            <button class="pw-toggle" type="button" onclick="togglePw('su-pw', this)">👁</button>
+          </div>
+          <div class="auth-hint">Minimum 8 characters</div>
+        </div>
+        <div class="auth-form-group">
+          <label for="su-source">How did you hear about Cara? <span class="label-opt">optional</span></label>
+          <select id="su-source">
+            <option value="">— Select —</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="friend">Friend or colleague</option>
+            <option value="google">Google search</option>
+            <option value="twitter">Twitter / X</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <button class="auth-submit" onclick="doSignup()">Create account →</button>
+
+        <div class="auth-switch">Already have an account? <a onclick="showAuthScreen('login')">Sign in</a></div>
+        <div style="text-align:center; margin-top:10px;">
+          <a onclick="enterApp()" style="font-size:12px; color:var(--muted); cursor:pointer; text-decoration:underline;">Skip for now (dev mode)</a>
+        </div>
+        <div class="auth-terms">By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</div>
+      </div>
+
+      <!-- ── LOGIN ── -->
+      <div class="auth-screen-inner" id="auth-login">
+        <div class="auth-form-title">Welcome back</div>
+        <div class="auth-form-sub">Sign in to continue your interview prep.</div>
+
+        <div class="auth-form-group">
+          <label for="li-email">Email address</label>
+          <input type="email" id="li-email" placeholder="elena@example.com">
+        </div>
+        <div class="auth-form-group">
+          <label for="li-pw">Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="li-pw" placeholder="Your password">
+            <button class="pw-toggle" type="button" onclick="togglePw('li-pw', this)">👁</button>
+          </div>
+        </div>
+        <div class="auth-forgot"><a>Forgot password?</a></div>
+
+        <button class="auth-submit" onclick="doLogin()">Sign in →</button>
+
+        <div class="auth-switch">New to Cara Coach? <a onclick="showAuthScreen('signup')">Create a free account</a></div>
+      </div>
+
+      <!-- ── SUCCESS ── -->
+      <div class="auth-screen-inner" id="auth-success">
+        <div class="auth-success-wrap">
+          <span class="auth-success-tick">✅</span>
+          <div class="auth-success-title">Account created!</div>
+          <div class="auth-success-sub">Welcome to Cara Coach, <strong id="welcome-name">Elena</strong>. Let's set up your first interview project — it takes about 2 minutes.</div>
+          <button class="auth-submit" onclick="enterApp()">Set up my first project →</button>
+        </div>
+      </div>
+
+    </div><!-- /auth-form-wrap -->
+  </div><!-- /auth-panel-right -->
+
+</div><!-- /auth-gate -->
+
+
+<!-- ════════════════════════════════════════
+  MAIN APP (hidden until auth complete)
+════════════════════════════════════════ -->
+<div id="app">
+
+<!-- ════════════════════════════════════════
+  TOP BAR
+════════════════════════════════════════ -->
+<header class="topbar">
+  <a class="logo" href="javascript:void(0)" onclick="logoClick()">
+    <span style="font-size:28px; line-height:1;">🎯</span>
+    <span class="logo-name">Cara Coach</span>
+  </a>
+  <nav class="topbar-nav">
+    <span class="nav-link active">My Projects</span>
+    <div class="avatar">EG</div>
+  </nav>
+</header>
+
+<!-- ════════════════════════════════════════
+  STEP INDICATOR
+════════════════════════════════════════ -->
+<div class="steps-bar">
+  <div class="steps">
+    <div class="step done">
+      <div class="step-bubble">✓</div>
+      <span class="step-label">Create account</span>
+    </div>
+    <div class="step active" id="s2">
+      <div class="step-bubble">2</div>
+      <span class="step-label">Add vacancy</span>
+    </div>
+    <div class="step" id="s3">
+      <div class="step-bubble">3</div>
+      <span class="step-label">Connect Telegram</span>
+    </div>
+    <div class="step" id="s4">
+      <div class="step-bubble">4</div>
+      <span class="step-label">Open Telegram</span>
+    </div>
+    <div class="step" id="s5">
+      <div class="step-bubble">5</div>
+      <span class="step-label">Start the bot</span>
+    </div>
+    <div class="step" id="s6">
+      <div class="step-bubble">6</div>
+      <span class="step-label">Cara greets you</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  LOADING OVERLAY
+════════════════════════════════════════ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-card">
+    <div class="spinner"></div>
+    <div class="loading-title">Analysing your documents…</div>
+    <div class="loading-sub">Cara is reading your CV and the job description. This happens once — results are cached for all sessions.</div>
+    <div class="loading-steps">
+      <div class="loading-step done-step">
+        <div class="step-dot"></div>
+        <span>Project created</span>
+      </div>
+      <div class="loading-step current-step">
+        <div class="step-dot"></div>
+        <span>Analysing CV &amp; JD gap…</span>
+      </div>
+      <div class="loading-step">
+        <div class="step-dot"></div>
+        <span>Generating question bank</span>
+      </div>
+      <div class="loading-step">
+        <div class="step-dot"></div>
+        <span>Preparing Telegram link</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  MAIN
+════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Actions</div>
+      <button class="new-project-btn" onclick="showForm()">＋ &nbsp;Add Vacancy</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">My Vacancies</div>
+      <div style="font-size:11px; color:var(--muted); font-weight:300; margin-bottom:10px; line-height:1.5;">Each vacancy = one Telegram channel</div>
+      <div class="project-list" id="project-list">
+        <div style="font-size:11px; color:var(--muted); font-weight:300; padding:8px 4px; line-height:1.5;">No vacancies yet. Click "Add Vacancy" to start.</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content" id="main-content">
+
+    <!-- ══════════════════════════════════
+      SCREEN 1 — FORM
+    ══════════════════════════════════ -->
+    <div class="screen active" id="screen-form">
+
+      <div class="page-crumb">Projects / <span class="crumb-active">New Vacancy</span></div>
+      <div class="page-title">Add a vacancy</div>
+      <div class="page-sub">Each vacancy gets its own Telegram channel. Fill in the details — Cara will analyse your CV and the job description, then send you a link to start practising.</div>
+
+      <div class="form-card">
+
+        <!-- 01 JOB DETAILS -->
+        <div class="form-section-label">01 — Job Details</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-role">Role title</label>
+            <input type="text" id="f-role" placeholder="e.g. Agent Strategist">
+          </div>
+          <div class="form-group">
+            <label for="f-company">Company name</label>
+            <input type="text" id="f-company" placeholder="e.g. Sierra">
+          </div>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- 02 YOUR DOCUMENTS -->
+        <div class="form-section-label">02 — Your Documents</div>
+
+        <div class="form-group">
+          <label>Upload CV</label>
+          <!-- Toggle between empty + filled states by clicking -->
+          <div id="upload-empty" class="upload-zone" onclick="uploadCV()">
+            <div class="upload-icon">📄</div>
+            <div class="upload-title">Drop your CV here, or click to browse</div>
+            <div class="upload-sub">Analysed once — cached for all sessions with this project</div>
+            <div class="upload-formats">
+              <span class="fmt">PDF</span>
+              <span class="fmt">DOCX</span>
+              <span class="fmt">DOC</span>
+            </div>
+          </div>
+          <div id="upload-filled" style="display:none;">
+            <div class="file-row">
+              <div class="file-type-icon">📄</div>
+              <div class="file-info">
+                <div class="file-name" id="cv-file-name">CV on file ✓</div>
+                <div class="file-size" id="cv-file-size">Previously uploaded · ready to use</div>
+              </div>
+              <button class="file-remove" onclick="removeCV()">✕</button>
+            </div>
+          </div>
+          <div class="field-hint">Max 10 MB · PDF or Word · Long CVs are auto-summarised — no action needed</div>
+        </div>
+
+        <div class="form-group">
+          <label for="f-jd">Job description</label>
+          <textarea id="f-jd" placeholder="Paste the full job description here. The more detail, the more targeted Cara's questions will be."></textarea>
+          <div class="field-hint">Paste the full JD — Cara extracts requirements and tailors all 9 questions to this specific role</div>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- 03 INTERVIEW SETTINGS -->
+        <div class="form-section-label">03 — Interview Settings</div>
+
+        <div class="form-row" style="align-items: start;">
+          <div class="form-group">
+            <label for="f-lang">Interview language</label>
+            <select id="f-lang">
+              <option value="en" selected>🇬🇧 &nbsp;English</option>
+              <option value="ru">🇷🇺 &nbsp;Russian</option>
+              <option value="fr">🇫🇷 &nbsp;French</option>
+              <option value="de">🇩🇪 &nbsp;German</option>
+              <option value="other">🌐 &nbsp;Other</option>
+            </select>
+            <div class="field-hint">Cara responds only in this language — even if you answer in another</div>
+          </div>
+          <div class="form-group">
+            <label for="f-date">Application date <span class="label-opt">optional</span></label>
+            <input type="date" id="f-date">
+            <div class="field-hint">If set, Cara tracks days to your interview and adds urgency nudges</div>
+          </div>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- 04 FEEDBACK MODE -->
+        <div class="form-section-label">04 — Feedback Mode</div>
+        <p class="mode-subtitle">Choose once here — in Telegram, Cara confirms your choice and moves straight to questions. She will never ask again.</p>
+
+        <div class="mode-grid">
+
+          <!-- MIRROR -->
+          <div class="mode-card" id="card-mirror" onclick="selectMode('mirror')">
+            <input type="radio" name="mode" value="mirror" id="r-mirror">
+            <div class="mode-top">
+              <span class="mode-name">MIRROR</span>
+              <div class="radio-ring"><div class="radio-dot"></div></div>
+            </div>
+            <span class="mode-pill mirror">Brutal honesty</span>
+            <div class="mode-desc">Direct, unfiltered feedback. Cara names every weakness clearly — no softening, no cushioning. Best for senior professionals who want the raw truth.</div>
+            <div class="mode-example">"Weak answer. No outcome, no numbers. This would not pass in a real interview. Retry or move on?"</div>
+          </div>
+
+          <!-- COACH -->
+          <div class="mode-card sel" id="card-coach" onclick="selectMode('coach')">
+            <input type="radio" name="mode" value="coach" id="r-coach" checked>
+            <div class="mode-top">
+              <span class="mode-name">COACH</span>
+              <div class="radio-ring"><div class="radio-dot"></div></div>
+            </div>
+            <span class="mode-pill coach">Honest but warm</span>
+            <div class="mode-desc">Same honest scoring, warmer delivery. Cara acknowledges your effort before the critique. Best if you want honest feedback with encouragement.</div>
+            <div class="mode-example">"This is a tough one — you're not alone. Here's what was missing: the outcome. Want to try again or move on?"</div>
+          </div>
+
+        </div>
+
+        <!-- FORM FOOTER -->
+        <div class="form-footer">
+          <div class="footer-note">Cara analyses your CV and JD once — this takes a few seconds.</div>
+          <div class="footer-actions">
+            <button class="btn btn-ghost" onclick="showForm()">Cancel</button>
+            <button class="btn btn-primary" onclick="submitForm()">
+              Create Project &nbsp;→
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /form-card -->
+    </div><!-- /screen-form -->
+
+
+    <!-- ══════════════════════════════════
+      SCREEN 2 — QR SUCCESS
+    ══════════════════════════════════ -->
+    <div class="screen" id="screen-qr">
+
+      <div class="page-crumb">Vacancies / Sierra — Agent Strategist / <span class="crumb-active">Ready</span></div>
+      <div class="page-title">Your Telegram bot is ready 🎯</div>
+      <div class="page-sub">Click the button below to open a dedicated Telegram chat for this vacancy. All your interview prep for Sierra happens there.</div>
+
+      <div class="success-banner" id="qr-success-banner">
+        <span class="success-banner-icon">✅</span>
+        <span class="success-banner-text">Vacancy created — CV and job description analysed and cached. Telegram bot is live.</span>
+      </div>
+      <div class="returning-banner" id="qr-returning-banner" style="display:none; align-items:center; gap:12px; padding:14px 18px; background:var(--blue-light); border:1.5px solid rgba(58,110,165,.3); border-radius:0; margin-bottom:24px; max-width:860px;">
+        <span style="font-size:20px;">🔁</span>
+        <span style="font-size:13.5px; font-weight:500; color:var(--blue);">Returning to this vacancy. Your Telegram bot is still active — click below to continue.</span>
+      </div>
+
+      <div class="qr-layout">
+
+        <!-- LEFT: Project summary -->
+        <div class="project-summary-card">
+          <div class="pscard-header">
+            <div class="pscard-project-name" id="qr-title"></div>
+            <div class="pscard-company">Project summary</div>
+          </div>
+          <div class="pscard-body">
+            <div class="pscard-row">
+              <span class="pscard-key">🌐 &nbsp;Language</span>
+              <span class="pscard-val" id="qr-lang"></span>
+            </div>
+            <div class="pscard-row">
+              <span class="pscard-key">🎭 &nbsp;Feedback mode</span>
+              <span class="pscard-val"><span class="mode-badge coach" id="qr-mode-badge">COACH</span></span>
+            </div>
+            <div class="pscard-row">
+              <span class="pscard-key">📅 &nbsp;Application date</span>
+              <span class="pscard-val" id="qr-date"></span>
+            </div>
+            <div class="pscard-row">
+              <span class="pscard-key">❓ &nbsp;Questions</span>
+              <span class="pscard-val">9 · 3 categories</span>
+            </div>
+            <div class="pscard-row">
+              <span class="pscard-key">⏱ &nbsp;Estimated time</span>
+              <span class="pscard-val">~30 minutes</span>
+            </div>
+            <div class="pscard-row">
+              <span class="pscard-key">💾 &nbsp;Session window</span>
+              <span class="pscard-val">24 hours</span>
+            </div>
+          </div>
+          <div class="pscard-footer">
+            📄 &nbsp;CV and JD cached — Cara won't re-read them each session
+          </div>
+          <div style="padding:14px 24px; border-top:1px solid var(--divider); display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <button class="btn btn-ghost" style="font-size:12px; padding:7px 14px;" onclick="editProject(currentProject)">✏️ Edit</button>
+            <button class="btn btn-ghost sessions-toggle-btn" id="sessions-toggle-btn" style="font-size:12px; padding:7px 14px;" onclick="toggleSessions()">📊 Sessions</button>
+            <div style="flex:1;"></div>
+            <button class="btn btn-ghost" id="close-vacancy-btn" style="font-size:12px; padding:7px 14px;" onclick="closeProject()">Close Vacancy</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: Telegram connect card -->
+        <div class="qr-card">
+          <div class="qr-card-title">Connect to Telegram</div>
+          <div class="qr-card-sub">One click — opens a dedicated chat<br>with Cara for this vacancy</div>
+
+          <!-- Telegram icon -->
+          <div style="margin: 24px auto 20px; width: 96px; height: 96px; border-radius: 50%; background: #229ED9; display: grid; place-items: center;">
+            <svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M41.4 7.2L5.6 21.1c-2.4 1-2.4 2.4-.4 3l9 2.8 20.8-13.1c1-.6 1.9-.3 1.2.4L17.6 32.2l-.7 9.4c1 0 1.4-.5 2-1l4.8-4.6 9.9 7.3c1.8 1 3.1.5 3.6-1.7L43.9 10c.7-2.7-.9-3.9-2.5-2.8z" fill="white"/>
+            </svg>
+          </div>
+
+          <!-- Bot handle -->
+          <div style="font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 4px;">@CaraCoachBot</div>
+          <div style="font-size: 12px; color: var(--muted); margin-bottom: 24px; font-weight: 300;">Your personal interview coach</div>
+
+          <!-- Open button -->
+          <a href="https://t.me/CaraCoachBot" target="_blank" style="display:block; text-decoration:none;">
+            <button style="width:100%; padding:14px; background:#229ED9; color:white; border:none; border-radius:8px; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background .18s;" onmouseover="this.style.background='#1a8ec4'" onmouseout="this.style.background='#229ED9'">
+              <svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M41.4 7.2L5.6 21.1c-2.4 1-2.4 2.4-.4 3l9 2.8 20.8-13.1c1-.6 1.9-.3 1.2.4L17.6 32.2l-.7 9.4c1 0 1.4-.5 2-1l4.8-4.6 9.9 7.3c1.8 1 3.1.5 3.6-1.7L43.9 10c.7-2.7-.9-3.9-2.5-2.8z" fill="white"/></svg>
+              Open in Telegram
+            </button>
+          </a>
+
+          <div style="margin-top:14px; font-size:11px; color:var(--muted); font-weight:300; line-height:1.6;">
+            The bot will recognise you by your Telegram account. Your session for this vacancy is ready — Cara will greet you immediately.
+          </div>
+
+        </div>
+
+      </div><!-- /qr-layout -->
+
+      <!-- ── SESSIONS PANEL ── -->
+      <div id="sessions-panel" style="display:none; max-width:860px; margin-top:24px;">
+        <div class="sessions-card">
+
+          <div class="sessions-header">
+            <div class="sessions-title">Session history</div>
+            <button class="btn btn-ghost" style="font-size:12px; padding:5px 14px;" onclick="toggleSessions()">✕ Close</button>
+          </div>
+
+          <!-- Metrics row -->
+          <div class="sess-metrics">
+            <div class="sess-metric">
+              <div class="sess-metric-label">Sessions</div>
+              <div class="sess-metric-value" id="sm-count">—</div>
+            </div>
+            <div class="sess-metric">
+              <div class="sess-metric-label">Last score</div>
+              <div class="sess-metric-value" id="sm-last" style="color:#169B82;">—</div>
+              <div class="sess-metric-delta" id="sm-delta"></div>
+            </div>
+            <div class="sess-metric">
+              <div class="sess-metric-label">Best score</div>
+              <div class="sess-metric-value" id="sm-best">—</div>
+            </div>
+            <div class="sess-metric">
+              <div class="sess-metric-label">Average</div>
+              <div class="sess-metric-value" id="sm-avg">—</div>
+            </div>
+            <div class="sess-metric">
+              <div class="sess-metric-label">Exec language</div>
+              <div class="sess-metric-value" id="sm-execlang" style="color:#E0823D;">—</div>
+            </div>
+            <!-- Export controls — same grid row as Exec language -->
+            <div style="grid-column: span 3; display:flex; align-items:center; gap:8px; padding:12px 14px; background:#F0F0F0;">
+              <span style="font-size:12px; color:#4A4A4A; white-space:nowrap;">Export:</span>
+              <input type="date" id="export-date-from" style="font-size:12px; padding:4px 6px; border:1px solid #D0D0D0; border-radius:6px; background:white; color:var(--ink); cursor:pointer; flex:1; min-width:0;">
+              <span style="font-size:12px; color:#4A4A4A;">→</span>
+              <input type="date" id="export-date-to" style="font-size:12px; padding:4px 6px; border:1px solid #D0D0D0; border-radius:6px; background:white; color:var(--ink); cursor:pointer; flex:1; min-width:0;">
+              <button class="btn btn-outline-accent" style="font-size:12px; padding:5px 14px; white-space:nowrap; flex-shrink:0;" onclick="exportDateRange()">📅 Export</button>
+            </div>
+          </div>
+
+          <!-- Category bars -->
+          <div class="sess-bars" id="sess-bars">
+            <div class="sess-bar-row">
+              <span class="sess-bar-label">Soft skills</span>
+              <div class="sess-bar-track"><div class="sess-bar-fill" id="bar-soft" style="width:0%; background:#378ADD;"></div></div>
+              <span class="sess-bar-val" id="bv-soft">—</span>
+            </div>
+            <div class="sess-bar-row">
+              <span class="sess-bar-label">Hard skills</span>
+              <div class="sess-bar-track"><div class="sess-bar-fill" id="bar-hard" style="width:0%; background:#169B82;"></div></div>
+              <span class="sess-bar-val" id="bv-hard">—</span>
+            </div>
+            <div class="sess-bar-row">
+              <span class="sess-bar-label">Behavioural</span>
+              <div class="sess-bar-track"><div class="sess-bar-fill" id="bar-beh" style="width:0%; background:#7F77DD;"></div></div>
+              <span class="sess-bar-val" id="bv-beh">—</span>
+            </div>
+            <div class="sess-bar-row">
+              <span class="sess-bar-label">Exec language</span>
+              <div class="sess-bar-track"><div class="sess-bar-fill" id="bar-execlang" style="width:0%; background:#E0823D;"></div></div>
+              <span class="sess-bar-val" id="bv-execlang">—</span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="sess-table-wrap">
+            <table class="sess-table">
+              <thead>
+                <tr>
+                  <th style="width:72px;">Date</th>
+                  <th style="width:72px;">Overall</th>
+                  <th>Soft</th>
+                  <th>Hard</th>
+                  <th>Behavioural</th>
+                  <th>Exec lang</th>
+                  <th>Retried</th>
+                  <th style="width:60px;">Export</th>
+                </tr>
+              </thead>
+              <tbody id="sess-tbody">
+                <tr><td colspan="8" style="text-align:center; color:var(--muted); padding:20px 0; font-size:13px;">No sessions yet — start your first session in Telegram 🎯</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- What happens next -->
+      <div class="next-steps">
+        <div class="next-steps-title">What happens next</div>
+        <div class="next-steps-row">
+          <div class="ns-item">
+            <div class="ns-num">4</div>
+            <div>
+              <div class="ns-text-title">Open Telegram</div>
+              <div class="ns-text-sub">Click "Open in Telegram" — launches a dedicated chat with Cara already configured for this vacancy</div>
+            </div>
+          </div>
+          <div class="ns-item">
+            <div class="ns-num">5</div>
+            <div>
+              <div class="ns-text-title">Cara greets you</div>
+              <div class="ns-text-sub">She confirms your mode and explains how the session works — once, at the very start</div>
+            </div>
+          </div>
+          <div class="ns-item">
+            <div class="ns-num">6</div>
+            <div>
+              <div class="ns-text-title">Answer 9 questions</div>
+              <div class="ns-text-sub">Voice message or text. ~30 min. Session stays open 24 h. The chat is yours permanently — come back anytime.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /screen-qr -->
+
+  </main>
+</div><!-- /main -->
+
+</div><!-- /app -->
+
+<script>
+  /* ──────────────────────────────────────
+     SAVED SETTINGS (injected by Flask)
+  ────────────────────────────────────── */
+  window.PROJECTS = {{ projects | tojson }};
+  window.HAS_CV   = {{ 'true' if has_cv else 'false' }};
+
+  /* ──────────────────────────────────────
+     AUTH
+  ────────────────────────────────────── */
+  function logoClick() {
+    if (document.getElementById('app').classList.contains('visible')) {
+      // Возвращаем на текущий проект, или на первый если ни один не открыт
+      const target = currentProject || Object.keys(projects)[0];
+      if (target) {
+        openProject(target);
+      } else {
+        showScreen('form');  // нет проектов — открываем форму создания
+      }
+    } else {
+      showAuthScreen('signup');
+    }
+  }
+
+  function showAuthScreen(name) {
+    document.querySelectorAll('.auth-screen-inner').forEach(s => s.classList.remove('active'));
+    document.getElementById('auth-' + name).classList.add('active');
+  }
+
+  function doSignup() {
+    const name  = document.getElementById('su-name').value.trim();
+    const email = document.getElementById('su-email').value.trim();
+    const pw    = document.getElementById('su-pw').value;
+    if (!name)  { flashAuthError('su-name',  'Please enter your name'); return; }
+    if (!email) { flashAuthError('su-email', 'Please enter your email'); return; }
+    if (pw.length < 1) { flashAuthError('su-pw', 'Please set a password'); return; }
+    // Update welcome name and avatar
+    const first = name.split(' ')[0];
+    document.getElementById('welcome-name').textContent = first;
+    const initials = name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    document.querySelector('.avatar').textContent = initials;
+    showAuthScreen('success');
+  }
+
+  function doLogin() {
+    const email = document.getElementById('li-email').value.trim();
+    const pw    = document.getElementById('li-pw').value;
+    if (!email) { flashAuthError('li-email', 'Please enter your email'); return; }
+    if (!pw)    { flashAuthError('li-pw',    'Please enter your password'); return; }
+    enterApp();
+  }
+
+  function enterApp() {
+    document.getElementById('auth-gate').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+  }
+
+  function flashAuthError(id, msg) {
+    const el = document.getElementById(id);
+    el.style.borderColor = '#e05c40';
+    el.focus();
+    setTimeout(() => el.style.borderColor = '', 2000);
+  }
+
+  function togglePw(id, btn) {
+    const el = document.getElementById(id);
+    if (el.type === 'password') { el.type = 'text'; btn.textContent = '🙈'; }
+    else                         { el.type = 'password'; btn.textContent = '👁'; }
+  }
+
+  /* ──────────────────────────────────────
+     STATE
+  ────────────────────────────────────── */
+  let selectedMode = 'coach';
+  let cvUploaded = false;
+
+  /* ──────────────────────────────────────
+     SCREEN NAVIGATION
+  ────────────────────────────────────── */
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + id).classList.add('active');
+    document.querySelector('.content').scrollTop = 0;
+  }
+
+  let editingSlug = null;   // slug текущей редактируемой вакансии
+
+  function showForm() {
+    editingSlug = null;
+    setStep(2);
+    showScreen('form');
+    setActiveSidebarItem(null);
+  }
+
+  function editProject(id) {
+    const p = projects[id];
+    if (!p) return;
+
+    // Находим полные данные (включая JD) из window.PROJECTS
+    const full = (window.PROJECTS || []).find(pr => pr.slug === p.slug) || {};
+
+    // Заполняем форму
+    document.getElementById('f-role').value    = p.role  || '';
+    document.getElementById('f-company').value = p.name  || '';
+    document.getElementById('f-date').value    = p.date  || '';
+    document.getElementById('f-jd').value      = full.jd || '';
+
+    // Язык
+    const langMap = { 'English': 'en', 'Russian': 'ru', 'French': 'fr', 'German': 'de' };
+    document.getElementById('f-lang').value = langMap[p.lang] || p.lang || 'en';
+
+    // Режим
+    selectMode(p.mode || 'coach');
+
+    // CV уже на сервере
+    if (window.HAS_CV) {
+      document.getElementById('upload-empty').style.display  = 'none';
+      document.getElementById('upload-filled').style.display = 'block';
+      document.getElementById('cv-file-name').textContent = 'CV on file ✓';
+      document.getElementById('cv-file-size').textContent = 'Previously uploaded · ready to use';
+      cvUploaded = true;
+    }
+
+    editingSlug = p.slug;   // сохраняем slug — при сохранении обновим, а не создадим
+    setStep(2);
+    showScreen('form');
+    setActiveSidebarItem(id);
+  }
+
+  /* ──────────────────────────────────────
+     PROJECT DATA (prototype sim)
+  ────────────────────────────────────── */
+  const projects = {};
+  let currentProject = null;
+  let projectCounter = (window.PROJECTS || []).length;  // не конфликтует с уже загруженными
+
+  function addProjectToSidebar(id, name, role) {
+    const list = document.getElementById('project-list');
+    // убираем заглушку если есть
+    const empty = list.querySelector('div[style]');
+    if (empty) empty.remove();
+    // убираем старый элемент с таким же id если уже есть (избегаем дублей)
+    const existing = document.getElementById('sidebar-' + id);
+    if (existing) existing.remove();
+
+    const item = document.createElement('div');
+    item.className = 'proj-item active';
+    item.id = 'sidebar-' + id;
+    item.onclick = () => openProject(id);
+    item.innerHTML = `
+      <span class="proj-name">${name}</span>
+      <span class="proj-role">${role}</span>
+      <span class="proj-badge new" id="badge-${id}">New</span>
+    `;
+    // снимаем active с остальных
+    list.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
+    list.appendChild(item);
+  }
+
+  function openProject(id) {
+    currentProject = id;
+    const p = projects[id];
+
+    closeSessionsPanel();
+    setActiveSidebarItem(id);
+
+    // Обновляем крошку навигации
+    document.querySelector('#screen-qr .page-crumb').innerHTML =
+      `Vacancies / ${p.name} — ${p.role} / <span class="crumb-active">Ready</span>`;
+
+    // Обновляем заголовок страницы
+    document.querySelector('#screen-qr .page-sub').textContent =
+      `Click the button below to open a dedicated Telegram chat for this vacancy. All your interview prep for ${p.name} happens there.`;
+
+    // Обновляем карточку
+    document.getElementById('qr-title').textContent = p.name + ' — ' + p.role;
+    document.getElementById('qr-lang').textContent  = p.lang;
+    document.getElementById('qr-date').textContent  = p.date ? formatDate(p.date) : 'Not set';
+    const badge = document.getElementById('qr-mode-badge');
+    badge.textContent = p.mode.toUpperCase();
+    badge.className   = 'mode-badge ' + p.mode;
+
+    document.getElementById('qr-success-banner').style.display   = 'none';
+    document.getElementById('qr-returning-banner').style.display = 'flex';
+
+    // Close / Reopen button
+    const closeBtn = document.getElementById('close-vacancy-btn');
+    if (closeBtn) {
+      if (p.status === 'closed') {
+        closeBtn.textContent = '↩ Reopen Vacancy';
+      } else {
+        closeBtn.textContent = 'Close Vacancy';
+      }
+    }
+
+    setStep(3);
+    showScreen('qr');
+  }
+
+  function setActiveSidebarItem(id) {
+    document.querySelectorAll('.proj-item').forEach(el => el.classList.remove('active'));
+    if (id) {
+      const el = document.getElementById('sidebar-' + id);
+      if (el) el.classList.add('active');
+    }
+  }
+
+  function setProjectBadge(id, status) {
+    const badge = document.getElementById('badge-' + id);
+    if (!badge) return;
+    const map = {
+      'new':       ['New',    'new'],
+      'active':    ['',       'active'],
+      'closed':    ['Closed', 'closed'],
+      'cancelled': ['Closed', 'closed'],   // legacy — treat same as closed
+    };
+    const [text, cls] = map[status] || ['', 'active'];
+    badge.textContent = text;
+    badge.className   = 'proj-badge ' + cls;
+    badge.style.display = text ? '' : 'none';
+  }
+
+  function closeProject() {
+    if (!currentProject) return;
+    const slug = projects[currentProject]?.slug;
+    if (!slug) return;
+    const isClosed = projects[currentProject]?.status === 'closed';
+    const newStatus = isClosed ? 'active' : 'closed';
+    fetch(`/api/projects/${slug}/status`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({status: newStatus})
+    }).then(() => {
+      projects[currentProject].status = newStatus;
+      setProjectBadge(currentProject, newStatus);
+      const closeBtn = document.getElementById('close-vacancy-btn');
+      if (closeBtn) {
+        closeBtn.textContent = newStatus === 'closed' ? '↩ Reopen Vacancy' : 'Close Vacancy';
+      }
+    });
+  }
+
+
+  /* ──────────────────────────────────────
+     STEP INDICATOR
+  ────────────────────────────────────── */
+  function setStep(n) {
+    for (let i = 2; i <= 6; i++) {
+      const el = document.getElementById('s' + i);
+      if (!el) continue;
+      if (i < n)       { el.className = 'step done'; el.querySelector('.step-bubble').textContent = '✓'; }
+      else if (i === n){ el.className = 'step active'; el.querySelector('.step-bubble').textContent = i; }
+      else             { el.className = 'step'; el.querySelector('.step-bubble').textContent = i; }
+    }
+  }
+
+  /* ──────────────────────────────────────
+     MODE SELECTION
+  ────────────────────────────────────── */
+  function selectMode(mode) {
+    selectedMode = mode;
+    document.getElementById('card-mirror').classList.toggle('sel', mode === 'mirror');
+    document.getElementById('card-coach').classList.toggle('sel',  mode === 'coach');
+    document.getElementById('r-' + mode).checked = true;
+
+    // update QR badge live
+    const badge = document.getElementById('qr-mode-badge');
+    if (badge) {
+      badge.textContent = mode.toUpperCase();
+      badge.className = 'mode-badge ' + mode;
+    }
+  }
+
+  /* ──────────────────────────────────────
+     CV UPLOAD TOGGLE (prototype sim)
+  ────────────────────────────────────── */
+  let cvFile = null;
+
+  function uploadCV() {
+    // создаём скрытый input если его нет
+    let input = document.getElementById('cv-file-input');
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'file';
+      input.id = 'cv-file-input';
+      input.accept = '.pdf,.doc,.docx,.txt';
+      input.style.display = 'none';
+      input.onchange = function() {
+        if (this.files && this.files[0]) {
+          cvFile = this.files[0];
+          document.getElementById('cv-file-name').textContent = cvFile.name;
+          document.getElementById('cv-file-size').textContent =
+            Math.round(cvFile.size / 1024) + ' KB · Uploaded';
+          document.getElementById('upload-empty').style.display = 'none';
+          document.getElementById('upload-filled').style.display = 'block';
+          cvUploaded = true;
+        }
+      };
+      document.body.appendChild(input);
+    }
+    input.click();
+  }
+
+  function removeCV() {
+    document.getElementById('upload-empty').style.display = 'block';
+    document.getElementById('upload-filled').style.display = 'none';
+    cvUploaded = false;
+    cvFile = null;
+  }
+
+  /* ──────────────────────────────────────
+     FORM SUBMISSION
+  ────────────────────────────────────── */
+  function submitForm() {
+    const role    = document.getElementById('f-role').value.trim();
+    const company = document.getElementById('f-company').value.trim();
+    const jd      = document.getElementById('f-jd').value.trim();
+    const lang    = document.getElementById('f-lang');
+    const date    = document.getElementById('f-date').value;
+
+    // Basic validation
+    if (!role) { flashError('f-role', 'Please enter a role title'); return; }
+    if (!company) { flashError('f-company', 'Please enter a company name'); return; }
+    if (!cvUploaded && !window.HAS_CV) {
+      document.getElementById('upload-empty').style.borderColor = '#e05c40';
+      setTimeout(() => document.getElementById('upload-empty').style.borderColor = '', 2000);
+      return;
+    }
+    if (!jd) { flashError('f-jd', 'Please paste the job description'); return; }
+
+    // Show loading
+    document.getElementById('loadingOverlay').classList.add('show');
+
+    // Собираем данные формы
+    const formData = new FormData();
+    formData.append('role',    role);
+    formData.append('company', company);
+    formData.append('jd',      jd);
+    formData.append('lang',    lang.value);
+    formData.append('date',    date);
+    formData.append('mode',    selectedMode);
+    formData.append('slug',    editingSlug || '');   // slug = обновить существующий, '' = создать новый
+    if (cvFile) formData.append('cv', cvFile);
+
+    // Отправляем на Flask
+    fetch('/submit', { method: 'POST', body: formData })
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('loadingOverlay').classList.remove('show');
+
+        // Update QR screen with form values
+        const langText = lang.options[lang.selectedIndex].text.replace(/^.\s+/, '').trim();
+        document.getElementById('qr-title').textContent      = company + ' — ' + role;
+        document.getElementById('qr-lang').textContent       = langText;
+        document.getElementById('qr-mode-badge').textContent = selectedMode.toUpperCase();
+        document.getElementById('qr-mode-badge').className   = 'mode-badge ' + selectedMode;
+        document.getElementById('qr-date').textContent       = date ? formatDate(date) : 'Not set';
+
+        if (editingSlug) {
+          // Редактирование существующей вакансии — обновляем данные
+          const pid = Object.keys(projects).find(k => projects[k].slug === editingSlug);
+          if (pid) {
+            projects[pid].name = company;
+            projects[pid].role = role;
+            projects[pid].lang = langText;
+            projects[pid].mode = selectedMode;
+            projects[pid].date = date;
+            // Обновляем название в сайдбаре
+            const el = document.getElementById('sidebar-' + pid);
+            if (el) {
+              el.querySelector('.proj-name').textContent = company;
+              el.querySelector('.proj-role').textContent = role;
+            }
+            currentProject = pid;
+          }
+          editingSlug = null;
+          document.getElementById('qr-success-banner').style.display  = 'none';
+          document.getElementById('qr-returning-banner').style.display = 'flex';
+        } else {
+          // Новая вакансия
+          projectCounter++;
+          const pid = 'project-' + projectCounter;
+          projects[pid] = { name: company, role: role, lang: langText, mode: selectedMode, date: date, status: 'new', slug: data.slug };
+          currentProject = pid;
+          addProjectToSidebar(pid, company, role);
+          document.getElementById('qr-success-banner').style.display  = 'flex';
+          document.getElementById('qr-returning-banner').style.display = 'none';
+        }
+
+        setStep(3);
+        showScreen('qr');
+      })
+      .catch(err => {
+        document.getElementById('loadingOverlay').classList.remove('show');
+        alert('Ошибка при сохранении: ' + err);
+      });
+  }
+
+  function flashError(id, msg) {
+    const el = document.getElementById(id);
+    el.style.borderColor = '#e05c40';
+    el.focus();
+    setTimeout(() => el.style.borderColor = '', 2000);
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  /* ──────────────────────────────────────
+     SESSIONS PANEL
+  ────────────────────────────────────── */
+
+  let sessionsOpen = false;
+  let currentSessionSlug = null;
+
+  function toggleSessions() {
+    const panel = document.getElementById('sessions-panel');
+    const btn   = document.getElementById('sessions-toggle-btn');
+    sessionsOpen = !sessionsOpen;
+    panel.style.display = sessionsOpen ? 'block' : 'none';
+    btn.classList.toggle('open', sessionsOpen);
+    if (sessionsOpen) {
+      loadAndRenderSessions(currentProject);
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function loadAndRenderSessions(pid) {
+    const p    = projects[pid] || {};
+    const slug = p.slug;
+    currentSessionSlug = slug || null;
+
+    // Set date pickers to today by default
+    const today = new Date().toISOString().slice(0, 10);
+    const fromEl = document.getElementById('export-date-from');
+    const toEl   = document.getElementById('export-date-to');
+    if (fromEl && !fromEl.value) fromEl.value = today;
+    if (toEl   && !toEl.value)   toEl.value   = today;
+
+    if (!slug) { renderSessions([], null); return; }
+
+    fetch(`/api/sessions/${slug}`)
+      .then(r => r.json())
+      .then(rows => renderSessions(rows, slug))
+      .catch(() => renderSessions([], slug));
+  }
+
+  function renderSessions(rows, slug) {
+    // Только завершённые сессии
+    rows = rows.filter(r => r.completed === true);
+    // история пишется от старых к новым → разворачиваем (новые сверху)
+    rows = [...rows].reverse();
+    const noData = rows.length === 0;
+
+    // Metrics
+    if (noData) {
+      ['sm-count','sm-last','sm-best','sm-avg'].forEach(id =>
+        document.getElementById(id).textContent = '—');
+      document.getElementById('sm-delta').textContent = '';
+      ['bar-soft','bar-hard','bar-beh','bar-execlang'].forEach(id =>
+        document.getElementById(id).style.width = '0%');
+      ['bv-soft','bv-hard','bv-beh','bv-execlang'].forEach(id =>
+        document.getElementById(id).textContent = '—');
+      document.getElementById('sm-execlang').textContent = '—';
+    } else {
+      const last = rows[0];
+      const prev = rows[1];
+      const best = Math.max(...rows.map(r => r.overall));
+      const avg  = (rows.reduce((s,r) => s + r.overall, 0) / rows.length).toFixed(1);
+
+      document.getElementById('sm-count').textContent = rows.length;
+      document.getElementById('sm-last').textContent  = last.overall.toFixed(1);
+      document.getElementById('sm-best').textContent  = best.toFixed(1);
+      document.getElementById('sm-avg').textContent   = avg;
+
+      if (prev) {
+        const delta = +(last.overall - prev.overall).toFixed(1);
+        const sign  = delta > 0 ? '+' : '';
+        document.getElementById('sm-delta').textContent = `${delta >= 0 ? '↑' : '↓'} ${sign}${delta} vs prev`;
+        document.getElementById('sm-delta').style.color = delta >= 0 ? '#169B82' : '#a04040';
+      } else {
+        document.getElementById('sm-delta').textContent = '';
+      }
+
+      // Bars — domain averages усредняем по всем сессиям
+      const domainKeys = Object.keys(rows[0].domain_averages || {});
+      // ищем ключи soft/hard/beh независимо от регистра
+      const findDomain = (keyword) =>
+        domainKeys.find(k => k.toLowerCase().includes(keyword)) || null;
+
+      const softKey = findDomain('soft');
+      const hardKey = findDomain('hard');
+      const behKey  = findDomain('behav');
+
+      const domAvg = (key) => key
+        ? (rows.reduce((s,r) => s + (r.domain_averages[key] || 0), 0) / rows.length)
+        : null;
+
+      const avgSoft = domAvg(softKey);
+      const avgHard = domAvg(hardKey);
+      const avgBeh  = domAvg(behKey);
+
+      // Exec language avg (stored directly in each row)
+      const elRows = rows.filter(r => r.exec_lang_avg != null);
+      const avgExecLang = elRows.length
+        ? elRows.reduce((s, r) => s + r.exec_lang_avg, 0) / elRows.length
+        : null;
+
+      if (avgExecLang !== null) {
+        document.getElementById('sm-execlang').textContent = avgExecLang.toFixed(1);
+      }
+
+      [['bar-soft','bv-soft', avgSoft], ['bar-hard','bv-hard', avgHard],
+       ['bar-beh','bv-beh', avgBeh], ['bar-execlang','bv-execlang', avgExecLang]]
+        .forEach(([barId, valId, val]) => {
+          if (val !== null) {
+            document.getElementById(barId).style.width = (val * 10) + '%';
+            document.getElementById(valId).textContent = val.toFixed(1);
+          }
+        });
+    }
+
+    // Table
+    const tbody = document.getElementById('sess-tbody');
+    if (noData) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--muted); padding:20px 0; font-size:13px;">No sessions yet — start your first session in Telegram 🎯</td></tr>';
+      return;
+    }
+
+    const domainKeys = Object.keys(rows[0].domain_averages || {});
+    const softKey = domainKeys.find(k => k.toLowerCase().includes('soft'));
+    const hardKey = domainKeys.find(k => k.toLowerCase().includes('hard'));
+    const behKey  = domainKeys.find(k => k.toLowerCase().includes('behav'));
+
+    tbody.innerHTML = rows.map(r => {
+      const d    = new Date(r.date + 'T00:00:00');
+      const dStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      const pill = r.overall >= 8 ? 'pill-hi' : r.overall >= 6.5 ? 'pill-mid' : 'pill-lo';
+      const da   = r.domain_averages || {};
+      const el   = r.exec_lang_avg != null ? r.exec_lang_avg.toFixed(1) : '—';
+      const exportCell = r.export_file && slug
+        ? `<a href="/api/projects/${slug}/export/${r.export_file}" download title="Download session export" style="color:var(--accent); text-decoration:none; font-size:16px;">⬇️</a>`
+        : '<span class="muted">—</span>';
+      return `<tr>
+        <td>${dStr}</td>
+        <td><span class="sess-pill ${pill}">${r.overall.toFixed(1)}</span></td>
+        <td>${softKey ? da[softKey].toFixed(1) : '—'}</td>
+        <td>${hardKey ? da[hardKey].toFixed(1) : '—'}</td>
+        <td>${behKey  ? da[behKey].toFixed(1)  : '—'}</td>
+        <td style="color:#E0823D; font-weight:600;">${el}</td>
+        <td class="muted">${r.retry_count ?? 0}</td>
+        <td style="text-align:center;">${exportCell}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function exportDateRange() {
+    if (!currentSessionSlug) return;
+    const from = document.getElementById('export-date-from').value;
+    const to   = document.getElementById('export-date-to').value;
+    if (!from || !to) { alert('Please select a date range.'); return; }
+    if (from > to)    { alert('Start date must be before end date.'); return; }
+    const url = `/api/projects/${currentSessionSlug}/export/range?from=${from}&to=${to}`;
+    const a   = document.createElement('a');
+    a.href    = url;
+    a.download = `export_${from}_${to}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  // Закрываем панель при переключении проекта
+  function closeSessionsPanel() {
+    sessionsOpen = false;
+    document.getElementById('sessions-panel').style.display = 'none';
+    const btn = document.getElementById('sessions-toggle-btn');
+    if (btn) btn.classList.remove('open');
+  }
+
+  /* ──────────────────────────────────────
+     INIT — restore saved projects on load
+  ────────────────────────────────────── */
+  function langLabel(code) {
+    return { en: 'English', ru: 'Russian', fr: 'French', de: 'German' }[code] || code || 'English';
+  }
+
+  (function init() {
+    if (!window.PROJECTS || window.PROJECTS.length === 0) return;
+
+    // Пропускаем auth gate
+    enterApp();
+
+    // CV — показываем как загруженный
+    if (window.HAS_CV) {
+      document.getElementById('upload-empty').style.display  = 'none';
+      document.getElementById('upload-filled').style.display = 'block';
+      document.getElementById('cv-file-name').textContent = 'CV on file ✓';
+      document.getElementById('cv-file-size').textContent = 'Previously uploaded · ready to use';
+      cvUploaded = true;
+    }
+
+    // Добавляем все проекты в сайдбар
+    window.PROJECTS.forEach((p, i) => {
+      const pid = 'project-' + (i + 1);
+      const status = p.status || 'active';
+      projects[pid] = {
+        name: p.company, role: p.role,
+        lang: langLabel(p.lang), mode: p.mode || 'coach',
+        date: p.date || '', status: status, slug: p.slug
+      };
+      addProjectToSidebar(pid, p.company, p.role);
+      setProjectBadge(pid, status);
+    });
+
+    if (window.PROJECTS.length > 0) {
+      // Открываем первую вакансию (отсортировано по последней сессии)
+      openProject('project-1');
+    }
+  })();
+</script>
+
+</body>
+</html>

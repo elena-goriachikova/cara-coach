@@ -1,0 +1,12 @@
+.env
+liora.env
+my_cv.txt
+my_jd.txt
+projects/
+bot_sessions.json
+cached_analysis.json
+session_settings.json
+prompt.txt
+__pycache__/
+*.pyc
+.DS_Store
