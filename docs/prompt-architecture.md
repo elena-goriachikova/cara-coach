@@ -203,4 +203,5 @@ Explicit format validation before parsing, retry on malformed response (max 1 re
 ---
 
 *Part of Cara Coach product documentation. See also: [Feature Inventory](./feature-inventory.md) · [Executive Language Scoring](./executive-language-scoring.md) · [Product Brief](./product-brief.md)*
-![footer](../cara-coach-footer.svg)
+
+![footer](../cara-coach-int-footer.svg)
