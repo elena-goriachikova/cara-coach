@@ -162,11 +162,6 @@ Keeping them separate gives the user a precise picture of where to invest practi
 
 Abstract feedback ("use less hedging") is easy to ignore. Seeing your own words reflected back with a rewrite makes the pattern impossible to miss — and gives you a concrete alternative to practise.
 
----
-
-*Part of Cara Coach product documentation. See also: [Feature Inventory](./feature-inventory.md) · [Product Brief](./product-brief.md)*
-
----
 
 ## Where the model comes from
 
@@ -189,4 +184,7 @@ Honest answer: in the current MVP, scoring relies on Claude's judgment guided by
 This is a known limitation. In practice, the scores are directionally correct and useful for tracking improvement over time — even if a 6.5 vs a 7.0 shouldn't be taken too literally. Explicit calibration logic is on the post-MVP roadmap, once there's enough real session data to work from.
 
 ![footer](../cara-coach-int-footer.svg)
+
+*Part of Cara Coach product documentation. See also: [Feature Inventory](./feature-inventory.md) · [Product Brief](./product-brief.md)*
+
 
