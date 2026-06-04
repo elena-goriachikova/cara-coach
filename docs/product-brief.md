@@ -401,7 +401,6 @@ prepares you for what\'s next before you ask.**
 
 *Part of Cara Coach product documentation. See also: [Feature Inventory](./feature-inventory.md) · [Executive Language Scoring](./executive-language-scoring.md) · [Prompt Architecture](./prompt-architecture.md)*
 
----
 
 ![footer](../cara-coach-int-footer.svg)
 
