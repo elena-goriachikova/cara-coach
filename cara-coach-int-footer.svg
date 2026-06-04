@@ -1,8 +1,8 @@
-<svg width="100%" viewBox="0 0 680 90" role="img" xmlns="http://www.w3.org/2000/svg">
+<svg width="100%" viewBox="0 0 680 60" role="img" xmlns="http://www.w3.org/2000/svg">
 <title>Cara Coach footer banner</title>
 <desc>Mint background footer banner</desc>
 
 <rect width="680" height="60" fill="#E0F2F1" rx="0"/>
 
-<text x="100" y="25" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-style="italic" fill="#00897B">Preparation that actually moves the needle</text>
+<text x="40" y="38" text-anchor="start" font-family="Georgia, serif" font-size="18" font-style="italic" fill="#00897B">Preparation that actually moves the needle</text>
 </svg>
