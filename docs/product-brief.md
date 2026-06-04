@@ -127,30 +127,13 @@ and ready - requires hosting and authentication layer to activate.
 
 Applied to every answer regardless of domain. Composite score 1--10
 based on 6 parameters:
-
-  ------------------------------------------------------------------------
-  **Parameter**         **What it measures**     **Question-aware**
-  --------------------- ------------------------ -------------------------
-  Top-down structure    **✅ Implemented**       Main point first ---
-                                                 always applied
-
-  Hedging density       **✅ Implemented**       Frequency of \'I think /
-                                                 maybe / I guess\' ---
-                                                 always
-
-  Apology language      **✅ Implemented**       Frequency of \'Sorry if
-                                                 this is long\' - always
-
-  Result presence       **✅ Implemented**       Is there a measurable
-                                                 outcome? - only when
-                                                 relevant
-
-  Professional          **✅ Implemented**       Domain language vs
-  vocabulary                                     layperson - always
-
-  Pattern & framework   **✅ Implemented**       Method vs single case ---
-  thinking                                       only when relevant
-  ------------------------------------------------------------------------
+| Parameter | What it measures | Question-aware |
+|---|---|---|
+| Top-down structure | Main point first | Always applied |
+| Hedging density | Frequency of 'I think / maybe / I guess' | Always |
+| Apology language | Frequency of 'Sorry if this is long' | Always |
+| Result presence | Is there a measurable outcome? | Only when relevant |
+| Professional
 
 Feedback delivered as verbatim quotes from the user\'s answer with
 rewrites in senior executive register: \"You said: \[quote\] → Try
@@ -213,17 +196,10 @@ answers). Duration/pace estimated from word count.
 
 ##  **06 Feedback Modes**
 
-  ------------------------------------------------------------------------
-  **Mode**   **COACH**                      **MIRROR**
-  ---------- ------------------------------ ------------------------------
-  **Tone**   Honest but supportive.         Direct and uncompromising. No
-             Highlights strengths, then     softening. Names weaknesses
-             improvement areas. Warm but    plainly.
-             direct.                        
-
-  **Best     Early preparation, building    Final preparation,
-  for**      confidence                     stress-testing answers
-  ------------------------------------------------------------------------
+| | COACH | MIRROR |
+|---|---|---|
+| **Tone** | Honest but supportive. Highlights strengths, then improvement areas. Warm but direct. | Direct and uncompromising. No softening. Names weaknesses plainly. |
+| **Best for** | Early preparation, building confid
 
 Mode is set once per project in the web dashboard and applies to all
 sessions for that vacancy.
@@ -301,33 +277,17 @@ if the CV or JD actually changes - not on every save.
 
 ##  **10 Technical Architecture**
 
-  ---------------------------------------------------------------------------
-  **Layer**          **Technology**        **Purpose**
-  ------------------ --------------------- ----------------------------------
-  **AI - scoring & Claude API            Question generation, gap analysis,
-  feedback**         (Anthropic)           scoring, ideal answers, exec
-                     claude-haiku-4-5      language, final debrief
+| Layer | Technology | Purpose |
+|---|---|---|
+| **AI — scoring & feedback** | Claude API (Anthropic) claude-haiku-4-5 | Question generation, gap analysis, scoring, ideal answers, exec language, final debrief |
+| **AI — voice** | OpenAI Whisper-1 | Speech-to-text transcription (EN + RU) |
+| **Bot framework** | python-telegram-bot (async) | Telegram interface, button handling, streaming |
+| **Web backend** | Flask (Python) | Project management API, session data, export endpoints |
+| **Storage** | SQLite (file-based) | Session history, project settings, cached analysis |
+| **CV parsing** | python-docx | .docx → plain text extraction |
+| **Security** | macOS Keychain | API keys stored securely, never in code or .env |
+| **Export** | Markdown (.md) | Session transcripts — lightweight, readable, LLM-ready |
 
-  **AI - voice**   OpenAI Whisper-1      Speech-to-text transcription (EN +
-                                           RU)
-
-  **Bot framework**  python-telegram-bot   Telegram interface, button
-                     (async)               handling, streaming
-
-  **Web backend**    Flask (Python)        Project management API, session
-                                           data, export endpoints
-
-  **Storage**        SQLite (file-based)   Session history, project settings,
-                                           cached analysis
-
-  **CV parsing**     python-docx           .docx → plain text extraction
-
-  **Security**       macOS Keychain        API keys stored securely, never in
-                                           code or .env
-
-  **Export**         Markdown (.md)        Session transcripts ---
-                                           lightweight, readable, LLM-ready
-  ---------------------------------------------------------------------------
 
 ##  **11 Success Metrics**
 
@@ -336,32 +296,15 @@ quantitative score trends, and real-world outcome.
 
 **Quantitative - tracked automatically per session**
 
-  ------------------------------------------------------------------------
-  **Metric**               **What it measures**     **Success signal**
-  ------------------------ ------------------------ ----------------------
-  **Overall score trend**  Average score across     Upward trajectory over
-                           sessions for the same    3+ sessions
-                           vacancy                  
+| Metric | What it measures | Success signal |
+|---|---|---|
+| **Overall score trend** | Average score across sessions for the same vacancy | Upward trajectory over 3+ sessions |
+| **Executive Language trend** | Composite exec lang score per session | Score increases; hedging density decreases |
+| **Retry rate** | How often user retries per session | Decreasing over time — gets it right first time |
+| **Filler word count** | Frequency of uncertainty markers per answer | Fewer fillers in later sessions |
+| **Response fluency** | Word count stable or growing while score improves | Same content delivered faster and cleaner |
+| **Top-down structure adoption** | Main point first vs buried in answer | Positive signal rate increases in Details feedback |
 
-  **Executive Language     Composite exec lang      Score increases;
-  trend**                  score per session        hedging density
-                                                    decreases
-
-  **Retry rate**           How often user retries   Decreasing over time
-                           per session              - gets it right
-                                                    first time
-
-  **Filler word count**    Frequency of uncertainty Fewer fillers in later
-                           markers per answer       sessions
-
-  **Response fluency**     Word count stable or     Same content delivered
-                           growing while score      faster and cleaner
-                           improves                 
-
-  **Top-down structure     Main point first vs      Positive signal rate
-  adoption**               buried in answer         increases in Details
-                                                    feedback
-  ------------------------------------------------------------------------
 
 **Qualitative - behavioural improvements**
 
@@ -392,43 +335,18 @@ on question generation and generic content feedback. Cara Coach occupies
 a differentiated position: executive-level coaching grounded in the
 user\'s real experience.
 
-  -------------------------------------------------------------------------------
-  **Feature**       **Cara       **Final    **Richard   **Sensei   **Generic
-                    Coach**      Round AI** McMunn**    AI**       ChatGPT**
-  ----------------- ------------ ---------- ----------- ---------- --------------
-  **CV-grounded     **✅ Yes**   ⚠️ Partial ✅ Yes      ❌ No      ❌ No
-  questions**                                                      
-
-  **Ideal answer    **✅ Yes**   ❌ No      ❌ No       ❌ No      ❌ No
-  from real CV**                                                   
-
-  **Executive       **✅ Yes**   ❌ No      ❌ No       ❌ No      ❌ No
-  Language                                                         
-  scoring**                                                        
-
-  **Speech / filler **✅ Yes**   ⚠️ Partial ❌ No       ⚠️ Partial ❌ No
-  analysis**                                                       
-
-  **Session         **✅ Yes**   ✅ Yes     ❌ No       ❌ No      ❌ No
-  analytics &                                                      
-  trends**                                                         
-
-  **Voice input     **✅         ⚠️ Web     ❌ No       ✅ Yes     ❌ No
-  (mobile)**        Telegram**   only                              
-
-  **Retry with      **✅ Yes**   ❌ No      ❌ No       ❌ No      ❌ No
-  score delta**                                                    
-
-  **Works on phone, **✅ Yes**   ❌ No      ❌ No       ❌ No      ❌ No
-  any time**                                                       
-
-  **Multi-vacancy   **✅ Yes**   ⚠️ Partial ❌ No       ❌ No      ❌ No
-  management**                                                     
-
-  **Export +        **✅ Yes**   ❌ No      ❌ No       ❌ No      ❌ No
-  pattern                                                          
-  analysis**                                                       
-  -------------------------------------------------------------------------------
+| Feature | Cara Coach | Final Round AI | Richard McMunn | Sensei AI | Generic ChatGPT |
+|---|---|---|---|---|---|
+| **CV-grounded questions** | ✅ Yes | ⚠️ Partial | ✅ Yes | ❌ No | ❌ No |
+| **Ideal answer from real CV** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Executive Language scoring** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Speech / filler analysis** | ✅ Yes | ⚠️ Partial | ❌ No | ⚠️ Partial | ❌ No |
+| **Session analytics & trends** | ✅ Yes | ✅ Yes | ❌ No | ❌ No | ❌ No |
+| **Voice input (mobile)** | ✅ Telegram | ⚠️ Web only | ❌ No | ✅ Yes | ❌ No |
+| **Retry with score delta** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Works on phone, any time** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Multi-vacancy management** | ✅ Yes | ⚠️ Partial | ❌ No | ❌ No | ❌ No |
+| **Export + pattern analysis** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No |
 
 Key differentiator: Cara is the only tool that combines CV-grounded
 personalisation, Executive Language scoring, voice input on mobile,
