@@ -1,3 +1,4 @@
+![banner](../cara-coach-banner.svg)
 # Prompt Architecture
 
 Cara Coach makes **6 separate Claude API calls** per session. This document explains what each call does, what goes in, and what comes out.
