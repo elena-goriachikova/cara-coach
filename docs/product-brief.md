@@ -1,8 +1,7 @@
-🎙
+![banner](./cara-coach-banner.svg)
 
-**Cara Coach**
-
-Product Brief v2.0
+##  AI-powered interview preparation agent. Built by a product manager, for professionals.
+##  Product Brief v2.0
 
 **AI-Powered Interview Preparation Agent**
 
