@@ -186,7 +186,7 @@ If you're preparing for interviews in markets where hedging is a politeness norm
 
 Honest answer: in the current MVP, scoring relies on Claude's judgment guided by qualitative instructions — not explicit numeric rules. There's no formula that says "3 hedges = minus 1.5 points."
 
+This is a known limitation. In practice, the scores are directionally correct and useful for tracking improvement over time — even if a 6.5 vs a 7.0 shouldn't be taken too literally. Explicit calibration logic is on the post-MVP roadmap, once there's enough real session data to work from.
+
 ![footer](../cara-coach-footer.svg)
 
-
-This is a known limitation. In practice, the scores are directionally correct and useful for tracking improvement over time — even if a 6.5 vs a 7.0 shouldn't be taken too literally. Explicit calibration logic is on the post-MVP roadmap, once there's enough real session data to work from.
