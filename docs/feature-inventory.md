@@ -1,5 +1,7 @@
+![banner](../cara-coach-banner.svg)
+
 # Cara Coach — Feature Inventory
-*Generated: June 2026*
+Created: June 2026
 
 ---
 
