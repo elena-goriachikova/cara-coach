@@ -188,5 +188,5 @@ Honest answer: in the current MVP, scoring relies on Claude's judgment guided by
 
 This is a known limitation. In practice, the scores are directionally correct and useful for tracking improvement over time — even if a 6.5 vs a 7.0 shouldn't be taken too literally. Explicit calibration logic is on the post-MVP roadmap, once there's enough real session data to work from.
 
-![footer](../cara-coach-footer.svg)
+![footer](../cara-coach-int-footer.svg)
 
