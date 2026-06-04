@@ -172,7 +172,7 @@ Product brief, state diagram, edge cases document, and system prompt architectur
 <img src="https://img.shields.io/badge/About%20the%20author-00897B?style=for-the-badge"/>
 
 
-Senior BA/PM with 20+ years in enterprise (BT Group, Primark, Janssen, AIB, Henry Schein).
+Senior PM/Lead BA with 20+ years in enterprise (BT Group, Primark, Janssen, AIB, Henry Schein).
 Currently focused on AI agent strategy and agentic product design.
 
 [LinkedIn →](https://www.linkedin.com/in/elena-goriachikova-4a6b8b4/)
