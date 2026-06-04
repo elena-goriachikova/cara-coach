@@ -16,6 +16,7 @@ It runs on Telegram (your phone, any time) and has a web dashboard for tracking 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## Why I built it
+<img src="https://img.shields.io/badge/Why%20I%20built%20it-00897B?style=for-the-badge"/>
 
 I was preparing for senior AI-strategy interviews and couldn't find a tool that gave honest, structured feedback — not just generic encouragement. And nothing personalised questions to *my* experience.
 
@@ -24,6 +25,7 @@ So I built one. It also happens to demonstrate exactly the skills I'm interviewi
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## How it works
+<img src="https://img.shields.io/badge/How%20it%20works-00897B?style=for-the-badge"/>
 
 **Step 1 — Setup (web dashboard)**
 Upload your CV and the job description. The system parses your CV into a structured profile: projects, roles, team sizes, outcomes, domain expertise. This becomes the foundation for everything that follows.
@@ -40,7 +42,11 @@ After each session, review your scores across four dimensions. Export the transc
 
 ## Features
 
+<img src="https://img.shields.io/badge/Features-00897B?style=for-the-badge"/>
+
 ### Telegram bot
+
+<img src="https://img.shields.io/badge/Telegram%20bot-00897B?style=for-the-badge"/>
 
 **Smart button logic: Details → Ideal Answer → Retry**
 
@@ -58,6 +64,8 @@ Format chosen deliberately: `.md` is lightweight, readable on a large monitor fo
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ### Web dashboard
+
+<img src="https://img.shields.io/badge/Web%20dashboard-00897B?style=for-the-badge"/>
 
 **Four-dimension scoring: Soft / Hard / Behavioural / Executive Language**
 
@@ -99,6 +107,9 @@ Closing a vacancy does not delete session history. All previous sessions are pre
 
 ### Infrastructure
 
+<img src="https://img.shields.io/badge/Infrastructure-00897B?style=for-the-badge"/>
+
+
 **Smart cache invalidation**
 
 Discovered during first testing: re-parsing the CV and JD on every session was burning tokens on static data. CV and job description don't change between sessions — only the answers do. After measuring token consumption and restructuring the cache, token usage dropped by **85%**. Cache now invalidates only when the CV or JD actually changes.
@@ -106,6 +117,8 @@ Discovered during first testing: re-parsing the CV and JD on every session was b
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## Tech stack
+<img src="https://img.shields.io/badge/Tech%20stack-00897B?style=for-the-badge"/>
+
 
 | Layer | Tech |
 |---|---|
@@ -119,6 +132,8 @@ Discovered during first testing: re-parsing the CV and JD on every session was b
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## How to run
+
+<img src="https://img.shields.io/badge/How%20to%20run-00897B?style=for-the-badge"/>
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/cara-coach
@@ -137,6 +152,9 @@ python app.py        # Web dashboard → localhost:5000
 
 ## Project structure
 
+<img src="https://img.shields.io/badge/Project%20structure-00897B?style=for-the-badge"/>
+
+
 ```
 cara-coach/
 ├── bot.py              # Telegram bot logic
@@ -151,6 +169,7 @@ cara-coach/
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## Background
+<img src="https://img.shields.io/badge/Background-00897B?style=for-the-badge"/>
 
 Built as part of a structured self-study programme in AI agent development.
 Product brief, state diagram, edge cases document, and system prompt architecture available on request.
@@ -158,6 +177,9 @@ Product brief, state diagram, edge cases document, and system prompt architectur
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## About the author
+
+<img src="https://img.shields.io/badge/About%20the%20author-00897B?style=for-the-badge"/>
+
 
 Senior BA/PM with 20+ years in enterprise (BT Group, Primark, Janssen, AIB, Henry Schein).
 Currently focused on AI agent strategy and agentic product design.
