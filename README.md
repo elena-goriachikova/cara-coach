@@ -5,7 +5,7 @@
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## What is this? 
-<img src="https://img.shields.io/badge/What%20is%20this-00897B?style=flat-square&logoColor=white"/>
+<img src="https://img.shields.io/badge/What%20is%20this-00897B?style=for-the-badge&logoColor=white"/>
 
 Cara Coach is a conversational AI agent that simulates real job interviews and gives structured, personalised feedback on your answers.
 
