@@ -1,4 +1,4 @@
-# 🎙️ Cara Coach
+![banner](./cara-coach-banner.svg)
 
 > AI-powered interview preparation agent — built by a product manager, for product managers.
 
@@ -161,4 +161,6 @@ Product brief, state diagram, edge cases document, and system prompt architectur
 Senior BA/PM with 20+ years in enterprise (BT Group, Primark, Janssen, AIB, Henry Schein).
 Currently focused on AI agent strategy and agentic product design.
 
-[LinkedIn →](https://linkedin.com/in/YOUR_PROFILE)
+[LinkedIn →](https://www.linkedin.com/in/elena-goriachikova-4a6b8b4/)
+
+![footer](./cara-coach-footer.svg)
