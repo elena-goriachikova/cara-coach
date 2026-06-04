@@ -16,10 +16,10 @@ runs as a Telegram bot with a web dashboard for session management and
 analytics.
 
 Unlike generic interview tools, Cara grounds every question in the
-user\'s actual CV and job description --- making each session feel like
+user\'s actual CV and job description - making each session feel like
 a real interview with a hiring manager who has read your background.
 
-**Status:** Active development --- functional MVP
+**Status:** Active development - functional MVP
 
 **Platform:** Telegram Bot + Flask Web Dashboard
 
@@ -38,32 +38,32 @@ coaching grounded in their actual experience.
 
 **What\'s missing in the market**
 
-> **→** Questions not grounded in the candidate\'s real CV --- generic
+> **→** Questions not grounded in the candidate\'s real CV - generic
 > templates instead of personalised scenarios
 >
-> **→** No executive language feedback --- tools score content but
+> **→** No executive language feedback - tools score content but
 > ignore how you sound as a leader
 >
-> **→** No speech analysis --- filler words, pace, answer length go
+> **→** No speech analysis - filler words, pace, answer length go
 > undetected
 >
-> **→** No structured improvement loop --- one-shot feedback with no
+> **→** No structured improvement loop - one-shot feedback with no
 > retry mechanism
 >
-> **→** No session analytics --- no way to track progress over time or
+> **→** No session analytics - no way to track progress over time or
 > identify patterns
 
 **03 Solution**
 
 Cara Coach solves this by combining three layers of intelligence:
 
-> **→** CV-grounded personalisation --- questions and ideal answers
+> **→** CV-grounded personalisation - questions and ideal answers
 > built from the user\'s real projects and experience
 >
-> **→** Executive Language scoring --- 6-parameter assessment of how
+> **→** Executive Language scoring - 6-parameter assessment of how
 > senior and confident the user sounds, independent of content
 >
-> **→** Structured feedback loop --- Score → Details → Ideal Answer →
+> **→** Structured feedback loop - Score → Details → Ideal Answer →
 > Retry, with analytics across sessions
 
 The result: preparation that feels like a real interview, not a quiz.
@@ -91,33 +91,33 @@ improves measurably over time.
 > **→** Executive coaches who want a structured tool for their clients
 
 Note: MVP is single-user (no auth). Multi-user architecture is designed
-and ready --- requires hosting and authentication layer to activate.
+and ready - requires hosting and authentication layer to activate.
 
-**05 Core Features --- MVP**
+**05 Core Features - MVP**
 
 **Telegram Bot**
 
-> **→** Multi-vacancy selection --- user picks which job to practise for
+> **→** Multi-vacancy selection - user picks which job to practise for
 >
 > **→** CV-grounded questions across 3 domains: Soft Skills / Hard
 > Skills / Behavioural
 >
-> **→** Voice input via OpenAI Whisper --- full flow from speech to
+> **→** Voice input via OpenAI Whisper - full flow from speech to
 > scored feedback in \~13 seconds
 >
-> **→** Text input --- typed answers evaluated identically to voice
+> **→** Text input - typed answers evaluated identically to voice
 >
-> **→** Streaming score delivery --- user sees feedback building in real
+> **→** Streaming score delivery - user sees feedback building in real
 > time
 >
 > **→** Progressive disclosure: Score → Details → Ideal Answer → Retry
 >
-> **→** Dynamic button hiding --- used buttons disappear, reset on retry
+> **→** Dynamic button hiding - used buttons disappear, reset on retry
 >
-> **→** Follow-up questions in context --- user can ask coaching
+> **→** Follow-up questions in context - user can ask coaching
 > questions after any answer
 >
-> **→** Score delta on retry --- shows +2 / -1 / no change vs previous
+> **→** Score delta on retry - shows +2 / -1 / no change vs previous
 > attempt
 >
 > **→** Session completion with per-domain scores, strongest/weakest
@@ -141,14 +141,14 @@ based on 6 parameters:
                                                  always
 
   Apology language      **✅ Implemented**       Frequency of \'Sorry if
-                                                 this is long\' --- always
+                                                 this is long\' - always
 
   Result presence       **✅ Implemented**       Is there a measurable
-                                                 outcome? --- only when
+                                                 outcome? - only when
                                                  relevant
 
   Professional          **✅ Implemented**       Domain language vs
-  vocabulary                                     layperson --- always
+  vocabulary                                     layperson - always
 
   Pattern & framework   **✅ Implemented**       Method vs single case ---
   thinking                                       only when relevant
@@ -160,10 +160,10 @@ instead: \[rewrite\]\"
 
 **Web Dashboard**
 
-> **→** Project creation and editing --- role, company, JD, language,
+> **→** Project creation and editing - role, company, JD, language,
 > mode, date
 >
-> **→** CV upload --- .txt and .docx supported
+> **→** CV upload - .txt and .docx supported
 >
 > **→** Vacancy sidebar sorted by last session date
 >
@@ -178,39 +178,39 @@ instead: \[rewrite\]\"
 >
 > **→** Per-session .md export download
 >
-> **→** Date range export --- all sessions in a period as one combined
+> **→** Date range export - all sessions in a period as one combined
 > .md file
 >
-> **→** Close / Reopen vacancy --- session history preserved on close
+> **→** Close / Reopen vacancy - session history preserved on close
 
 **Speech Analysis**
 
-> **→** Pace analysis --- flags too slow (\<90wpm) or too fast
+> **→** Pace analysis - flags too slow (\<90wpm) or too fast
 > (\>160wpm)
 >
-> **→** Answer length analysis --- too short (\<30s), optimal, or too
+> **→** Answer length analysis - too short (\<30s), optimal, or too
 > long (\>120s)
 >
-> **→** Filler word detection --- 18-word list in English and Russian
+> **→** Filler word detection - 18-word list in English and Russian
 
 Note: analysis is text-based (works on both typed and transcribed
 answers). Duration/pace estimated from word count.
 
 **Performance & Architecture**
 
-> **→** Smart cache invalidation --- cache cleared only when JD or CV
+> **→** Smart cache invalidation - cache cleared only when JD or CV
 > actually changes, not on every save
 >
 > **→** 85% reduction in Claude API calls via CV story catalog caching
 > and merged score+ideal answer calls
 >
-> **→** Streaming responses via AsyncAnthropic --- no silent waits
+> **→** Streaming responses via AsyncAnthropic - no silent waits
 >
-> **→** Session persistence to disk --- survives bot restart
+> **→** Session persistence to disk - survives bot restart
 >
-> **→** Multi-chat support --- session isolation by chat_id
+> **→** Multi-chat support - session isolation by chat_id
 >
-> **→** API keys via macOS Keychain --- no .env file, secrets never in
+> **→** API keys via macOS Keychain - no .env file, secrets never in
 > code
 
 **06 Feedback Modes**
@@ -235,21 +235,21 @@ sessions for that vacancy.
 At session start, Cara runs a one-time analysis that extracts a
 structured CV catalog from the user\'s CV:
 
-> **→** ROLES --- job titles and companies held
+> **→** ROLES - job titles and companies held
 >
-> **→** TOP STORIES --- 5--7 high-impact project narratives
+> **→** TOP STORIES - 5--7 high-impact project narratives
 >
-> **→** KEY METRICS --- quantified outcomes (team sizes, % improvements,
+> **→** KEY METRICS - quantified outcomes (team sizes, % improvements,
 > revenue figures)
 >
-> **→** DOMAINS --- industries and functional areas covered
+> **→** DOMAINS - industries and functional areas covered
 >
-> **→** STRONGEST MATCH --- best-fit experience for the target JD
+> **→** STRONGEST MATCH - best-fit experience for the target JD
 
 This catalog powers two things:
 
 > **→** Questions are contextualised: \"You led a team of 110 at BT
-> Group --- how did you manage transparent communication at that
+> Group - how did you manage transparent communication at that
 > scale?\"
 >
 > **→** Ideal answers are grounded in real experience: Claude writes a
@@ -257,7 +257,7 @@ This catalog powers two things:
 > invent experience at the target company.
 
 The catalog is cached and reused across sessions. It is only regenerated
-if the CV or JD actually changes --- not on every save.
+if the CV or JD actually changes - not on every save.
 
 **08 Session Flow**
 
@@ -269,7 +269,7 @@ if the CV or JD actually changes --- not on every save.
                                   and feedback mode
 
   **2**    **Start**              User sends /start in Telegram. Bot checks
-                                  cache --- instant start if cached, or runs
+                                  cache - instant start if cached, or runs
                                   3-step analysis (CV gaps → questions → CV
                                   catalog)
 
@@ -311,30 +311,30 @@ if the CV or JD actually changes --- not on every save.
 
 **Authentication & Hosting**
 
-> **→** User auth (signup/login) --- UI stubs already exist in frontend
+> **→** User auth (signup/login) - UI stubs already exist in frontend
 >
-> **→** Cloud hosting (Railway / Render) --- enables multi-user access
+> **→** Cloud hosting (Railway / Render) - enables multi-user access
 >
-> **→** Per-user CV storage --- remove global my_cv.txt constraint
+> **→** Per-user CV storage - remove global my_cv.txt constraint
 
 **Configurable Parameters**
 
-> **→** Question count --- currently hardcoded at 6 (2 per domain)
+> **→** Question count - currently hardcoded at 6 (2 per domain)
 >
-> **→** Session window --- currently hardcoded at 24h display
+> **→** Session window - currently hardcoded at 24h display
 >
-> **→** Estimated time --- currently hardcoded at \~30 min
+> **→** Estimated time - currently hardcoded at \~30 min
 >
-> **→** Real-time dashboard refresh --- currently manual reload
+> **→** Real-time dashboard refresh - currently manual reload
 
 **PDF Support**
 
-> **→** PDF CV parsing --- currently broken (saves raw bytes). Needs
+> **→** PDF CV parsing - currently broken (saves raw bytes). Needs
 > PyPDF2 or pdfminer
 
 **Analytics & Intelligence**
 
-> **→** Pattern analysis across sessions --- 80/20 of recurring mistakes
+> **→** Pattern analysis across sessions - 80/20 of recurring mistakes
 >
 > **→** Progress tracking over time with trend lines
 >
@@ -345,11 +345,11 @@ if the CV or JD actually changes --- not on every save.
   ---------------------------------------------------------------------------
   **Layer**          **Technology**        **Purpose**
   ------------------ --------------------- ----------------------------------
-  **AI --- scoring & Claude API            Question generation, gap analysis,
+  **AI - scoring & Claude API            Question generation, gap analysis,
   feedback**         (Anthropic)           scoring, ideal answers, exec
                      claude-haiku-4-5      language, final debrief
 
-  **AI --- voice**   OpenAI Whisper-1      Speech-to-text transcription (EN +
+  **AI - voice**   OpenAI Whisper-1      Speech-to-text transcription (EN +
                                            RU)
 
   **Bot framework**  python-telegram-bot   Telegram interface, button
@@ -375,7 +375,7 @@ if the CV or JD actually changes --- not on every save.
 Cara Coach measures improvement across three layers: behavioural change,
 quantitative score trends, and real-world outcome.
 
-**Quantitative --- tracked automatically per session**
+**Quantitative - tracked automatically per session**
 
   ------------------------------------------------------------------------
   **Metric**               **What it measures**     **Success signal**
@@ -389,7 +389,7 @@ quantitative score trends, and real-world outcome.
                                                     decreases
 
   **Retry rate**           How often user retries   Decreasing over time
-                           per session              --- gets it right
+                           per session              - gets it right
                                                     first time
 
   **Filler word count**    Frequency of uncertainty Fewer fillers in later
@@ -404,23 +404,23 @@ quantitative score trends, and real-world outcome.
                                                     feedback
   ------------------------------------------------------------------------
 
-**Qualitative --- behavioural improvements**
+**Qualitative - behavioural improvements**
 
-> **→** Answers become more specific --- fewer generic statements, more
+> **→** Answers become more specific - fewer generic statements, more
 > concrete cases with metrics and outcomes
 >
-> **→** Top-down structure adopted --- main point delivered first,
+> **→** Top-down structure adopted - main point delivered first,
 > details follow
 >
-> **→** Professional vocabulary improves --- domain terms used naturally
+> **→** Professional vocabulary improves - domain terms used naturally
 > without prompting
 >
-> **→** Fluency under pressure --- user orients faster, answers feel
+> **→** Fluency under pressure - user orients faster, answers feel
 > less like searching for words
 
-**Proxy metric --- real-world outcome**
+**Proxy metric - real-world outcome**
 
-> **→** Interview conversion rate --- user receives interview invitation
+> **→** Interview conversion rate - user receives interview invitation
 > or offer after preparing with Cara
 
 This is the strongest signal but requires voluntary user follow-up. To
@@ -473,7 +473,7 @@ user\'s real experience.
 
 Key differentiator: Cara is the only tool that combines CV-grounded
 personalisation, Executive Language scoring, voice input on mobile,
-session analytics, and export for external pattern analysis --- in one
+session analytics, and export for external pattern analysis - in one
 product.
 
 **13 Vision**
@@ -481,43 +481,43 @@ product.
 Cara Coach starts as an interview preparation tool. The longer arc is
 bigger.
 
-**Where we are now --- MVP**
+**Where we are now - MVP**
 
 > **→** Single user, local deployment, Telegram + web dashboard
 >
 > **→** Preparation for a specific vacancy with structured feedback and
 > session analytics
 
-**12 months --- Multi-user platform**
+**12 months - Multi-user platform**
 
-> **→** Authentication + cloud hosting --- any professional can sign up
+> **→** Authentication + cloud hosting - any professional can sign up
 > and use Cara
 >
-> **→** Cross-session intelligence --- Cara identifies your recurring
+> **→** Cross-session intelligence - Cara identifies your recurring
 > patterns and suggests what to practise next
 >
-> **→** Configurable parameters --- question count, session length,
+> **→** Configurable parameters - question count, session length,
 > domain weighting
 >
-> **→** Progress reports --- weekly digest of improvement areas sent
+> **→** Progress reports - weekly digest of improvement areas sent
 > automatically
 
-**24 months --- Adaptive coaching agent**
+**24 months - Adaptive coaching agent**
 
 > **→** Cara remembers your history across all vacancies and builds a
 > personal development model
 >
-> **→** Proactive coaching --- \'You\'re applying to Sierra next week.
+> **→** Proactive coaching - \'You\'re applying to Sierra next week.
 > Based on your last 6 sessions, focus on top-down structure and result
 > presence\'
 >
-> **→** Team version --- managers use Cara to prepare their reports for
+> **→** Team version - managers use Cara to prepare their reports for
 > promotion interviews or board presentations
 >
-> **→** Integration with job search tools --- Cara knows which role
+> **→** Integration with job search tools - Cara knows which role
 > you\'re targeting and adjusts coaching accordingly
 
-**The vision: an agent that knows your career better than you do --- and
+**The vision: an agent that knows your career better than you do - and
 prepares you for what\'s next before you ask.**
 
 **Preparation that actually moves the needle.**
