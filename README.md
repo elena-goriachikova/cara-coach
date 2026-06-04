@@ -8,7 +8,10 @@
 
 Cara Coach is a conversational AI agent that simulates real job interviews and gives structured, personalised feedback on your answers.
 
-You paste a job description and your CV. Cara parses your experience, generates questions grounded in your actual projects, and gives you feedback in a sandwich format: **what worked → what to improve → score out of 10**.
+You upload your CV and the job description. Cara reads your experience and builds a question set grounded in your actual projects — not generic templates.
+Then the interview starts. Cara asks. You answer. She listens like a real interviewer would — checking not just what you know, but how you communicate it: hard skills, soft skills, behavioural answers, and executive language.
+She also notices what most people miss: whether your answer ran too long, whether your structure was clear, whether filler words crept in. The things that cost you the job even when you knew the answer.
+After each response you get structured feedback: **what landed, what to sharpen, and a score out of 10**.
 
 It runs on Telegram (your phone, any time) and has a web dashboard for tracking progress over time.
 
