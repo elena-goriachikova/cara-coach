@@ -1,0 +1,5 @@
+anthropic
+openai
+python-telegram-bot[job-queue]
+flask
+python-docx
