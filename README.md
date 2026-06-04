@@ -4,7 +4,6 @@
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-## What is this? 
 <img src="https://img.shields.io/badge/What%20is%20this-00897B?style=for-the-badge&logoColor=white"/>
 
 Cara Coach is a conversational AI agent that simulates real job interviews and gives structured, personalised feedback on your answers.
@@ -15,7 +14,6 @@ It runs on Telegram (your phone, any time) and has a web dashboard for tracking 
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-## Why I built it
 <img src="https://img.shields.io/badge/Why%20I%20built%20it-00897B?style=for-the-badge"/>
 
 I was preparing for senior AI-strategy interviews and couldn't find a tool that gave honest, structured feedback — not just generic encouragement. And nothing personalised questions to *my* experience.
@@ -24,7 +22,6 @@ So I built one. It also happens to demonstrate exactly the skills I'm interviewi
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-## How it works
 <img src="https://img.shields.io/badge/How%20it%20works-00897B?style=for-the-badge"/>
 
 **Step 1 — Setup (web dashboard)**
@@ -40,11 +37,9 @@ After each session, review your scores across four dimensions. Export the transc
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-## Features
 
 <img src="https://img.shields.io/badge/Features-00897B?style=for-the-badge"/>
 
-### Telegram bot
 
 <img src="https://img.shields.io/badge/Telegram%20bot-00897B?style=for-the-badge"/>
 
@@ -63,7 +58,6 @@ Format chosen deliberately: `.md` is lightweight, readable on a large monitor fo
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-### Web dashboard
 
 <img src="https://img.shields.io/badge/Web%20dashboard-00897B?style=for-the-badge"/>
 
@@ -105,7 +99,6 @@ Closing a vacancy does not delete session history. All previous sessions are pre
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-### Infrastructure
 
 <img src="https://img.shields.io/badge/Infrastructure-00897B?style=for-the-badge"/>
 
@@ -131,7 +124,6 @@ Discovered during first testing: re-parsing the CV and JD on every session was b
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-## How to run
 
 <img src="https://img.shields.io/badge/How%20to%20run-00897B?style=for-the-badge"/>
 
@@ -150,7 +142,6 @@ python app.py        # Web dashboard → localhost:5000
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-## Project structure
 
 <img src="https://img.shields.io/badge/Project%20structure-00897B?style=for-the-badge"/>
 
@@ -168,7 +159,6 @@ cara-coach/
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-## Background
 <img src="https://img.shields.io/badge/Background-00897B?style=for-the-badge"/>
 
 Built as part of a structured self-study programme in AI agent development.
@@ -176,7 +166,6 @@ Product brief, state diagram, edge cases document, and system prompt architectur
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
-## About the author
 
 <img src="https://img.shields.io/badge/About%20the%20author-00897B?style=for-the-badge"/>
 
