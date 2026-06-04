@@ -185,6 +185,6 @@ This is a known limitation. In practice, the scores are directionally correct an
 
 ![footer](../cara-coach-int-footer.svg)
 
-*Part of Cara Coach product documentation. See also: [Feature Inventory](./feature-inventory.md) · [Product Brief](./product-brief.md)*
+*Part of Cara Coach product documentation. See also: [Product Brief](./product-brief.md) · [Feature Inventory](./feature-inventory.md) · [Prompt Architecture](./prompt-architecture.md)*
 
 
