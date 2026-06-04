@@ -1,7 +1,7 @@
 ![banner](./cara-coach-banner.svg)
 <img src="https://img.shields.io/badge/Status-Active%20Development-00897B?style=for-the-badge"/>
 
-##  AI-powered interview preparation agent - built by a product manager, for product managers.
+##  AI-powered interview preparation agent. Built by a product manager, for professionals.
 
 <img src="https://img.shields.io/badge/What%20is%20this-00897B?style=for-the-badge&logoColor=white"/>
 
