@@ -1,7 +1,6 @@
 ![banner](../cara-coach-banner.svg)
 
 # Cara Coach — Feature Inventory
-Created: June 2026
 
 ---
 
@@ -205,6 +204,7 @@ Created: June 2026
 *Part of Cara Coach product documentation. See also:  [Product Brief](./product-brief.md)  · [Executive Language Scoring](./executive-language-scoring.md) · [Prompt Architecture](./prompt-architecture.md)  *
 
 ---
+Created: June 2026
 
 
 ![footer](../cara-coach-int-footer.svg)
