@@ -2,7 +2,7 @@
 
 > AI-powered interview preparation agent — built by a product manager, for product managers.
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## What is this?
 
@@ -12,7 +12,7 @@ You paste a job description and your CV. Cara parses your experience, generates 
 
 It runs on Telegram (your phone, any time) and has a web dashboard for tracking progress over time.
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## Why I built it
 
@@ -20,7 +20,7 @@ I was preparing for senior AI-strategy interviews and couldn't find a tool that 
 
 So I built one. It also happens to demonstrate exactly the skills I'm interviewing for: AI agent design, conversation architecture, product thinking, and Python development.
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## How it works
 
@@ -35,7 +35,7 @@ Start a session. Cara asks you interview questions — not generic ones, but que
 **Step 3 — Review (web dashboard)**
 After each session, review your scores across four dimensions. Export the transcript. Analyse patterns. Come back and go again.
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## Features
 
@@ -54,7 +54,7 @@ Buttons appear in sequence and hide after use — by design.
 
 Format chosen deliberately: `.md` is lightweight, readable on a large monitor for end-of-day review, and — critically — it's a direct input for the next step. Feed the transcript to a chat model, ask it to identify patterns and the 80/20 of recurring mistakes. PDF would waste tokens. `.md` is enough.
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ### Web dashboard
 
@@ -94,7 +94,7 @@ Columns: Date · Overall · Soft · Hard · Behavioural · Exec Language · Retr
 
 Closing a vacancy does not delete session history. All previous sessions are preserved and statistics accumulate when the vacancy is reopened. Because job searches are non-linear — you pause, you revisit, you continue.
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ### Infrastructure
 
@@ -102,7 +102,7 @@ Closing a vacancy does not delete session history. All previous sessions are pre
 
 Discovered during first testing: re-parsing the CV and JD on every session was burning tokens on static data. CV and job description don't change between sessions — only the answers do. After measuring token consumption and restructuring the cache, token usage dropped by **85%**. Cache now invalidates only when the CV or JD actually changes.
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## Tech stack
 
@@ -115,7 +115,7 @@ Discovered during first testing: re-parsing the CV and JD on every session was b
 | Storage | SQLite |
 | Export | Markdown (.md) |
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## How to run
 
@@ -132,7 +132,7 @@ python bot.py        # Telegram bot
 python app.py        # Web dashboard → localhost:5000
 ```
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## Project structure
 
@@ -147,14 +147,14 @@ cara-coach/
 └── settings.json       # Vacancy config & status
 ```
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## Background
 
 Built as part of a structured self-study programme in AI agent development.
 Product brief, state diagram, edge cases document, and system prompt architecture available on request.
 
----
+<img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
 ## About the author
 
