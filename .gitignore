@@ -1,0 +1,5 @@
+.env
+my_cv.txt
+projects/
+__pycache__/
+*.pyc
