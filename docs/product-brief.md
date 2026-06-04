@@ -399,5 +399,5 @@ prepares you for what\'s next before you ask.**
 
 **Preparation that actually moves the needle.**
 
-![footer](../cara-coach-footer.svg)
+![footer](../cara-coach-int-footer.svg)
 
