@@ -51,7 +51,7 @@ Persona is injected only where needed:
 ```
 cv_text           — full CV text
 jd_text           — full job description
-lang_instruction  — "Respond in English." or "Отвечай на русском языке."
+lang_instruction  — "Respond in English." / "Réponds en français." / "Antworte auf Deutsch." / "Отвечай на русском языке."
 ```
 Output: a plain-text analysis of gaps between the CV and the JD. This feeds directly into question generation.
 
