@@ -24,7 +24,7 @@ a real interview with a hiring manager who has read your background.
 **Tech stack:** Python · Claude API (Anthropic) · OpenAI Whisper ·
 SQLite · Flask
 
-**Languages:** English · Russian (multilingual architecture)
+**Languages:** English · French · German · Russian — set per project via Interview Language parameter (multilingual architecture)
 
 **Author:** Elena Goriachikova, Senior PM/BA → AI Agent Strategist
 
