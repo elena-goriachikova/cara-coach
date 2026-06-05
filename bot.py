@@ -1,10 +1,8 @@
 import re
 import json
 import os
-import sys
 import signal
 import subprocess
-import asyncio
 import tempfile
 import time
 
@@ -18,7 +16,7 @@ from cara_agent import (
     ask_claude_async, ask_claude_async_stream, _build_score_prompt, _parse_score_raw
 )
 
-# ── Токены из Keychain ─────────────────────────────────────────────────────────
+# ── API tokens from macOS Keychain ────────────────────────────────────────────
 def _keychain(service):
     return subprocess.run(
         ["security", "find-generic-password", "-a", subprocess.getoutput("whoami"), "-s", service, "-w"],
@@ -33,7 +31,7 @@ PROJECTS_DIR  = "projects"
 PID_FILE      = "bot.pid"
 
 
-# ── Работа с проектами (несколько вакансий) ────────────────────────────────────
+# ── Project management (multi-vacancy support) ────────────────────────────────
 def list_projects():
     projects = []
     if not os.path.exists(PROJECTS_DIR):
@@ -85,8 +83,8 @@ def save_project_cache(slug, gaps, questions_by_domain, cv_catalog):
         }, f, ensure_ascii=False, indent=2)
 
 def update_session_snapshot(session, completed=False):
-    """Сохраняет / обновляет снапшот текущей сессии в session_history.json.
-    Вызывается после каждого ответа и при завершении — работает для любого числа вопросов."""
+    """Saves / updates the current session snapshot in session_history.json.
+    Called after every answer and on completion — works for any number of questions."""
     slug = session.get("slug")
     if not slug:
         return
@@ -127,7 +125,7 @@ def update_session_snapshot(session, completed=False):
         with open(path, "r", encoding="utf-8") as f:
             history = json.load(f)
 
-    # Обновляем запись текущей сессии если уже есть, иначе добавляем
+    # Update existing session entry, or append if new
     sid = entry["session_id"]
     idx = next((i for i, h in enumerate(history) if h.get("session_id") == sid), None)
     if idx is not None:
@@ -140,7 +138,7 @@ def update_session_snapshot(session, completed=False):
 
 
 def ensure_single_instance():
-    """Убивает ВСЕ предыдущие экземпляры bot.py."""
+    """Kills all previous bot.py instances to prevent duplicate polling."""
     current_pid = os.getpid()
     result = subprocess.run(["pgrep", "-f", "bot.py"], capture_output=True, text=True)
     pids = [int(p) for p in result.stdout.strip().split("\n") if p and int(p) != current_pid]
@@ -157,14 +155,14 @@ def ensure_single_instance():
         f.write(str(current_pid))
 
 def cleanup_pid():
-    """Удаляет PID-файл при выходе."""
+    """Removes the PID file on exit."""
     if os.path.exists(PID_FILE):
         os.remove(PID_FILE)
 
 ensure_single_instance()
 
 
-# ── Состояние сессий (chat_id → dict) ─────────────────────────────────────────
+# ── Session state (chat_id → dict) ───────────────────────────────────────────
 SESSIONS_FILE = "bot_sessions.json"
 
 def load_sessions():
@@ -180,9 +178,7 @@ def save_sessions(sessions):
 sessions = load_sessions()
 
 
-
-
-# ── /start ─────────────────────────────────────────────────────────────────────
+# ── /start ────────────────────────────────────────────────────────────────────
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id  = update.effective_chat.id
     projects = list_projects()
@@ -194,10 +190,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if len(projects) == 1:
-        # Одна вакансия — сразу начинаем
+        # Single vacancy — start immediately
         await begin_interview(context, chat_id, projects[0]["slug"])
     else:
-        # Несколько — показываем кнопки выбора
+        # Multiple vacancies — show selection menu
         keyboard = InlineKeyboardMarkup([
             [InlineKeyboardButton(
                 f"🏢 {p.get('company', '?')} — {p.get('role', '?')}",
@@ -211,7 +207,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-# ── Запуск интервью по выбранной вакансии ──────────────────────────────────────
+# ── Start interview for the selected vacancy ──────────────────────────────────
 async def begin_interview(context: ContextTypes.DEFAULT_TYPE, chat_id: int, slug: str):
     settings = load_project(slug)
     if not settings:
@@ -287,7 +283,7 @@ async def begin_interview(context: ContextTypes.DEFAULT_TYPE, chat_id: int, slug
         await context.bot.send_message(chat_id=chat_id, text=f"❌ Error: {e}")
 
 
-# ── Отправка следующего вопроса ────────────────────────────────────────────────
+# ── Send next question ────────────────────────────────────────────────────────
 async def send_next_question(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     session = sessions.get(chat_id)
     if not session:
@@ -297,7 +293,7 @@ async def send_next_question(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     d_idx = session["domain_index"]
     q_idx = session["question_index"]
 
-    # Все вопросы заданы — завершаем сессию
+    # All questions answered — finish session
     if d_idx >= len(domain_list):
         await finish_session(context, chat_id)
         return
@@ -305,14 +301,14 @@ async def send_next_question(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     current_domain = domain_list[d_idx]
     questions = session["questions_by_domain"][current_domain]
 
-    # Переход к следующей категории
+    # Move to next domain
     if q_idx >= len(questions):
         session["domain_index"] += 1
         session["question_index"] = 0
         await send_next_question(context, chat_id)
         return
 
-    # Анонс новой категории
+    # Announce new domain at its first question
     if q_idx == 0:
         await context.bot.send_message(chat_id=chat_id, text=f"🗂 Category: {current_domain.upper()}")
 
@@ -329,7 +325,7 @@ async def send_next_question(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     await context.bot.send_message(chat_id=chat_id, text=f"❓ Question {answered+1}/{total}:\n\n{question}")
 
 
-# ── Динамическая клавиатура (скрываем уже использованные Details/Ideal) ───────
+# ── Dynamic keyboard (hide already-used Details/Ideal buttons) ────────────────
 def build_keyboard(q_key: str, chat_id: int, used: set) -> InlineKeyboardMarkup:
     row1 = []
     if "details" not in used:
@@ -344,9 +340,9 @@ def build_keyboard(q_key: str, chat_id: int, used: set) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(rows)
 
 
-# ── Follow-up вопрос во время сессии ──────────────────────────────────────────
+# ── Follow-up question handler ────────────────────────────────────────────────
 async def handle_followup_question(context: ContextTypes.DEFAULT_TYPE, chat_id: int, user_question: str):
-    """Отвечает на вопрос пользователя в контексте последнего раунда, затем снова показывает кнопки."""
+    """Answers a follow-up question in the context of the last Q&A round, then re-shows the buttons."""
     session = sessions.get(chat_id)
     if not session:
         return
@@ -358,7 +354,7 @@ async def handle_followup_question(context: ContextTypes.DEFAULT_TYPE, chat_id: 
 
     interview_question = fb.get("question", session.get("current_question", ""))
 
-    # Последний ответ кандидата из транскрипта
+    # Get the candidate's last answer from the transcript
     transcript = session.get("transcript_lines", [])
     candidate_answer = ""
     if transcript:
@@ -386,16 +382,16 @@ async def handle_followup_question(context: ContextTypes.DEFAULT_TYPE, chat_id: 
     response = await ask_claude_async(prompt)
     await context.bot.send_message(chat_id=chat_id, text=f"💬 {response}")
 
-    # Снова показываем кнопки (скрываем уже использованные)
+    # Re-show buttons, hiding already-used ones
     used = set(fb.get("used_buttons", []))
     keyboard = build_keyboard(q_key, chat_id, used)
     await context.bot.send_message(chat_id=chat_id, text="👆 Continue:", reply_markup=keyboard)
 
 
-# ── Обработка ответа пользователя ─────────────────────────────────────────────
+# ── Incoming text message handler ─────────────────────────────────────────────
 async def handle_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not update.message or not update.message.text:
-        return  # игнорируем voice, edited messages и прочие non-text updates
+        return  # ignore voice, edited messages, and other non-text updates
 
     chat_id = update.effective_chat.id
     session = sessions.get(chat_id)
@@ -415,8 +411,6 @@ async def handle_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
     answer   = update.message.text.strip()
     question = session["current_question"]
     domain   = session["current_domain"]
-    mode     = session["settings"].get("mode", "coach")
-    lang     = session["settings"].get("lang", "en")
 
     # SKIP
     if answer.upper() == "SKIP":
@@ -432,7 +426,7 @@ async def handle_answer(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await process_answer(context, chat_id, answer)
 
 
-# ── Основная логика обработки ответа ─────────────────────────────────────────
+# ── Core answer processing logic ──────────────────────────────────────────────
 async def process_answer(context: ContextTypes.DEFAULT_TYPE, chat_id: int, answer: str):
     session = sessions.get(chat_id)
     if not session:
@@ -450,7 +444,7 @@ async def process_answer(context: ContextTypes.DEFAULT_TYPE, chat_id: int, answe
 
     _t = time.time()
 
-    # Streaming — бот показывает прогресс пока Claude думает
+    # Streaming — show live progress while Claude evaluates
     prompt = _build_score_prompt(question, answer, session["cv_text"], mode, lang)
     msg = await context.bot.send_message(chat_id=chat_id, text="⏳ Evaluating…")
     buffer = ""
@@ -461,7 +455,7 @@ async def process_answer(context: ContextTypes.DEFAULT_TYPE, chat_id: int, answe
         buffer += chunk
         now = time.time()
 
-        # "typing…" индикатор каждые 4 секунды — пользователь видит что бот живой
+        # Send "typing" action every 4s so the user knows the bot is alive
         if now - last_typing > 4:
             try:
                 await context.bot.send_chat_action(chat_id=chat_id, action="typing")
@@ -469,7 +463,7 @@ async def process_answer(context: ContextTypes.DEFAULT_TYPE, chat_id: int, answe
             except Exception:
                 pass
 
-        # обновляем текст сообщения каждые 1.5 секунды
+        # Update the preview message every 1.5s
         if now - last_edit > 1.5:
             preview = buffer.replace('*', '')[:400]
             try:
@@ -533,14 +527,13 @@ async def process_answer(context: ContextTypes.DEFAULT_TYPE, chat_id: int, answe
     session["q_counter"] = session.get("q_counter", 0) + 1
     session["waiting_for_button"] = True
     save_sessions(sessions)
-    update_session_snapshot(session)   # сохраняем частичный прогресс после каждого ответа
+    update_session_snapshot(session)   # save partial progress after every answer
 
     # Exec language score line shown in the immediate score card
     exec_lang_line = f"\n🗣 Exec language: {exec_lang_score}/10" if exec_lang_score else ""
 
-    # Fresh question — no buttons used yet
+    # Replace the streaming message with the final score card + buttons
     keyboard = build_keyboard(q_key, chat_id, set())
-    # Заменяем streaming-сообщение финальным score + кнопки
     await context.bot.edit_message_text(
         chat_id=chat_id,
         message_id=msg.message_id,
@@ -549,7 +542,7 @@ async def process_answer(context: ContextTypes.DEFAULT_TYPE, chat_id: int, answe
     )
 
 
-# ── Транскрипция голоса ───────────────────────────────────────────────────────
+# ── Voice transcription ───────────────────────────────────────────────────────
 async def transcribe_voice(file_path: str, lang: str = "en") -> str:
     with open(file_path, "rb") as audio_file:
         transcript = await openai_client.audio.transcriptions.create(
@@ -603,12 +596,12 @@ async def voice_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(f"⏱ Total:       {time.time()-t0:.1f}s")
 
 
-# ── Обработка inline-кнопок ───────────────────────────────────────────────────
+# ── Inline button handler ─────────────────────────────────────────────────────
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    # Выбор вакансии при /start
+    # Vacancy selection from /start menu
     if query.data.startswith("choose|"):
         slug = query.data[7:]
         await query.message.edit_reply_markup(reply_markup=None)
@@ -636,7 +629,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             save_sessions(sessions)
 
         keyboard = build_keyboard(q_key, chat_id, used)
-        # Update the clicked message so Details can't be pressed again from it
         try:
             await query.message.edit_reply_markup(reply_markup=keyboard)
         except Exception:
@@ -661,7 +653,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             save_sessions(sessions)
 
         keyboard = build_keyboard(q_key, chat_id, used)
-        # Update the clicked message so Ideal can't be pressed again from it
         try:
             await query.message.edit_reply_markup(reply_markup=keyboard)
         except Exception:
@@ -715,7 +706,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await send_next_question(context, chat_id)
 
 
-# ── Генерация Markdown-экспорта сессии ───────────────────────────────────────
+# ── Session Markdown export ───────────────────────────────────────────────────
 def generate_session_export(session: dict, final_feedback_text: str = "") -> str:
     """Returns a full Markdown document of everything shown to the user in the session."""
     settings      = session.get("settings", {})
@@ -823,7 +814,7 @@ def generate_session_export(session: dict, final_feedback_text: str = "") -> str
     return "\n".join(lines)
 
 
-# ── Завершение сессии ──────────────────────────────────────────────────────────
+# ── Session completion ────────────────────────────────────────────────────────
 async def finish_session(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     session = sessions[chat_id]
 
@@ -832,7 +823,7 @@ async def finish_session(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
         for d, s in session["domain_scores"].items()
     }
 
-    lang    = session["settings"].get("lang", "en")
+    lang = session["settings"].get("lang", "en")
 
     all_scores = session["question_scores"]
     if all_scores:
@@ -852,7 +843,7 @@ async def finish_session(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     except (ValueError, TypeError):
         el_avg = None
 
-    # Build scores table (4 rows: 3 category + exec language)
+    # Build scores table (3 domain rows + exec language)
     score_rows = "\n".join(
         f"  {d.replace('soft skills','Soft skills').replace('hard skills','Hard skills').replace('behavioural questions','Behavioural'):<22}{avg}/10"
         for d, avg in domain_averages.items()
@@ -874,7 +865,7 @@ async def finish_session(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
 
     await context.bot.send_message(chat_id=chat_id, text="✅ Session complete! Good luck at the real interview 🚀")
 
-    # Финализируем запись сессии (completed=True)
+    # Finalise session record (completed=True)
     update_session_snapshot(session, completed=True)
 
     # Generate and save Markdown export
@@ -906,7 +897,7 @@ async def finish_session(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
     save_sessions(sessions)
 
 
-# ── Запуск ─────────────────────────────────────────────────────────────────────
+# ── Bot startup ───────────────────────────────────────────────────────────────
 def main():
     app = Application.builder().token(token).build()
     app.add_handler(CommandHandler("start", start))

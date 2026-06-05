@@ -6,6 +6,10 @@ DOMAIN1 = "soft skills"
 DOMAIN2 = "hard skills"
 DOMAIN3 = "behavioural questions"
 
+# Russian-language instruction strings sent to Claude — must remain in Russian
+LANG_INSTRUCTION_RU = "Отвечай на русском языке."
+LANG_QUESTIONS_RU   = "Пиши все вопросы на русском языке."
+
 key = subprocess.run(
     ["security", "find-generic-password", "-a", subprocess.getoutput("whoami"), "-s", "ANTHROPIC_API_KEY", "-w"],
     capture_output=True, text=True
@@ -14,7 +18,7 @@ key = subprocess.run(
 async_client = anthropic.AsyncAnthropic(api_key=key)
 
 async def ask_claude_async(prompt):
-    """Async — используется в Telegram bot, не блокирует event loop."""
+    """Async wrapper around the Anthropic API — used in the Telegram bot to avoid blocking the event loop."""
     response = await async_client.messages.create(
         model="claude-haiku-4-5-20251001",
         max_tokens=4096,
@@ -37,7 +41,7 @@ def ingest_cv_jd(cv_path, jd_path):
     return cv_text, jd_text
 
 async def analyze_gaps(cv_text, jd_text, lang="en"):
-    lang_instruction = "Respond in English." if lang == "en" else "Отвечай на русском языке."
+    lang_instruction = "Respond in English." if lang == "en" else LANG_INSTRUCTION_RU
     prompt = (
         f"Compare the CV and job description, identify gaps and give recommendations.\n\n"
         f"CV:\n{cv_text}\n\nJob Description:\n{jd_text}\n\n{lang_instruction}"
@@ -46,7 +50,7 @@ async def analyze_gaps(cv_text, jd_text, lang="en"):
 
 async def generate_questions(gaps, lang="en"):
     questions_per_domain = max(1, NUM_QUESTIONS // 3)
-    lang_instruction = "Write all questions in English." if lang == "en" else "Пиши все вопросы на русском языке."
+    lang_instruction = "Write all questions in English." if lang == "en" else LANG_QUESTIONS_RU
     prompt = (
         f"Generate interview questions based on the candidate's gaps.\n\n"
         f"Gaps:\n{gaps}\n\n"
@@ -64,14 +68,14 @@ async def generate_questions(gaps, lang="en"):
     )
     raw = await ask_claude_async(prompt)
 
-    # парсим в словарь {domain: [вопросы]}
+    # Parse raw response into {domain: [questions]} dict
     result = {DOMAIN1: [], DOMAIN2: [], DOMAIN3: []}
     current_domain = None
     for line in raw.strip().split("\n"):
         line = line.strip()
         if not line:
             continue
-        # убираем markdown символы перед проверкой домена
+        # Strip markdown symbols before domain header matching
         clean_line = line.strip("*#:").strip().lower()
         matched_domain = next((d for d in result if clean_line.startswith(d.lower())), None)
         if matched_domain:
@@ -82,9 +86,9 @@ async def generate_questions(gaps, lang="en"):
     return result
 
 async def extract_cv_catalog(cv_text, jd_text, lang="en"):
-    """One-time extraction: structured story catalog from full CV, targeted at the specific JD.
+    """One-time extraction: structured story catalog from the full CV, targeted at the specific JD.
     Cached and reused for every question — replaces sending the full CV each time."""
-    lang_instruction = "Respond in English." if lang == "en" else "Отвечай на русском языке."
+    lang_instruction = "Respond in English." if lang == "en" else LANG_INSTRUCTION_RU
     prompt = (
         f"You are preparing a candidate for a specific job interview.\n"
         f"Extract a structured story catalog from their CV, relevant to the job description.\n"
@@ -112,58 +116,52 @@ async def extract_cv_catalog(cv_text, jd_text, lang="en"):
 
 
 def analyze_speech(answer):
-    """Analyses answer text: filler words, length, pace."""
+    """Analyses answer text: filler words and estimated speaking length.
+    Note: pace cannot be reliably assessed from text alone — only length is evaluated."""
     words = answer.split()
     word_count = len(words)
 
-    # Estimate duration (average speech ~120 words/min)
-    duration_sec = round(word_count / 120 * 60)
+    # Estimate speaking duration assuming average speech rate of ~120 words/min
+    duration_sec = round(word_count / 2)  # 120 wpm = 2 words/sec
 
-    # Filler words (Russian and English)
+    # Filler words (Russian and English) — split once for efficiency
     fillers_ru = {"ну", "это", "вот", "короче", "типа", "значит", "как бы", "в общем", "собственно", "буквально"}
     fillers_en = {"like", "you know", "basically", "actually", "literally", "so", "um", "uh", "right"}
     all_fillers = fillers_ru | fillers_en
 
+    words_lower = answer.lower().split()
     found_fillers = []
-    text_lower = answer.lower()
     for filler in all_fillers:
-        count = text_lower.split().count(filler)
+        count = words_lower.count(filler)
         if count >= 2:
             found_fillers.append(f'"{filler}" ({count}x)')
 
-    # Speech pace
-    if word_count / max(duration_sec, 1) * 60 < 90:
-        tempo = f"⚠️ Speech pace: ~{duration_sec}s — too slow, may sound uncertain"
-    elif word_count / max(duration_sec, 1) * 60 > 160:
-        tempo = f"⚠️ Speech pace: ~{duration_sec}s — too fast, hard to follow"
-    else:
-        tempo = f"✅ Speech pace: ~{duration_sec}s — good pace"
-
-    # Answer length
+    # Answer length check
     if duration_sec < 30:
-        length = f"⚠️ Answer length: ~{duration_sec}s — too short"
+        length = f"⚠️ Answer length: ~{duration_sec}s — too short (aim for 45–90s)"
     elif duration_sec > 120:
-        length = f"⚠️ Answer length: ~{duration_sec}s — too long, focus on the key points"
+        length = f"⚠️ Answer length: ~{duration_sec}s — too long (aim for 45–90s)"
     else:
-        length = f"✅ Answer length: ~{duration_sec}s — optimal"
+        length = f"✅ Answer length: ~{duration_sec}s — good length"
 
-    # Filler words
-    if found_fillers:
-        fillers_line = f"⚠️ Filler words: {', '.join(found_fillers)}"
-    else:
-        fillers_line = "✅ Filler words: none detected"
+    # Filler word check
+    fillers_line = (
+        f"⚠️ Filler words: {', '.join(found_fillers)}"
+        if found_fillers else
+        "✅ Filler words: none detected"
+    )
 
-    return f"{tempo}\n{fillers_line}\n{length}"
+    return f"{length}\n{fillers_line}"
 
 
 def _build_score_prompt(question, answer, cv_text, mode, lang):
-    """Builds the prompt for score_and_ideal. Shared by streaming and non-streaming versions."""
+    """Builds the evaluation prompt. Used by both streaming and non-streaming scoring."""
     is_mirror = mode.lower() == "mirror"
     if is_mirror:
         style = "Be direct and uncompromising. No softening. Name weaknesses plainly. The candidate wants brutally honest feedback."
     else:
         style = "Be honest but supportive. Highlight strengths, then point out specifically what to improve. Warm but honest tone."
-    lang_instruction = "Respond in English." if lang == "en" else "Отвечай на русском языке."
+    lang_instruction = "Respond in English." if lang == "en" else LANG_INSTRUCTION_RU
 
     exec_lang_format = (
         f"EXEC_LANG_SCORE: [float 1.0–10.0 with one decimal — rate HOW the answer is delivered, "
@@ -230,7 +228,7 @@ def _build_score_prompt(question, answer, cv_text, mode, lang):
 
 
 def _parse_score_raw(raw, answer, previous_score):
-    """Parses Claude's structured response. Shared by streaming and non-streaming."""
+    """Parses Claude's structured response. Shared by streaming and non-streaming paths."""
     def extract(key):
         for line in raw.split("\n"):
             if line.startswith(f"{key}:"):
@@ -302,10 +300,10 @@ async def ask_claude_async_stream(prompt):
             yield text
 
 
-
 async def final_feedback(domain_averages, lang="en"):
+    """Generates a short end-of-session debrief based on domain scores."""
     summary = "\n".join(f"{domain}: {avg}/10" for domain, avg in domain_averages.items())
-    lang_instruction = "Respond in English." if lang == "en" else "Отвечай на русском языке."
+    lang_instruction = "Respond in English." if lang == "en" else LANG_INSTRUCTION_RU
     prompt = (
         f"Candidate's interview scores:\n{summary}\n\n"
         f"Write a SHORT, punchy debrief. Maximum 120 words total. No filler, no repetition.\n\n"

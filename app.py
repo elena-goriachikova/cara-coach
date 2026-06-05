@@ -100,15 +100,20 @@ def submit():
         else:
             cv_file.save(CV_FILE)
 
-    # Settings per project — preserve existing status if present
+    # Settings per project — preserve existing status and detect lang change before overwriting
     existing_settings_path = os.path.join(project_dir, "settings.json")
     existing_status = "active"
+    existing_lang   = None
     if os.path.exists(existing_settings_path):
         try:
             with open(existing_settings_path, "r", encoding="utf-8") as f:
-                existing_status = json.load(f).get("status", "active")
+                existing = json.load(f)
+                existing_status = existing.get("status", "active")
+                existing_lang   = existing.get("lang")
         except Exception:
             pass
+
+    lang_changed = existing_lang is not None and existing_lang != lang
 
     settings = {
         "role": role, "company": company, "jd": jd,
@@ -118,7 +123,7 @@ def submit():
     with open(existing_settings_path, "w") as f:
         json.dump(settings, f, ensure_ascii=False, indent=2)
 
-    # Invalidate cache only if JD actually changed
+    # Invalidate cache if JD, CV, or interview language changed
     jd_path    = os.path.join(project_dir, "jd.txt")
     cache_path = os.path.join(project_dir, "cached_analysis.json")
 
@@ -131,11 +136,12 @@ def submit():
     with open(jd_path, "w", encoding="utf-8") as f:
         f.write(jd)
 
-    if (jd_changed or cv_changed) and os.path.exists(cache_path):
+    if (jd_changed or cv_changed or lang_changed) and os.path.exists(cache_path):
         os.remove(cache_path)
         reason = []
-        if jd_changed: reason.append("JD changed")
-        if cv_changed: reason.append("CV changed")
+        if jd_changed:   reason.append("JD changed")
+        if cv_changed:   reason.append("CV changed")
+        if lang_changed: reason.append(f"language changed ({existing_lang} → {lang})")
         print(f"🗑 Cache invalidated for {slug} ({', '.join(reason)})")
 
     print(f"✅ Project saved: {slug}")
