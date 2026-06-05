@@ -47,7 +47,7 @@ How frequently does the answer contain uncertainty markers relative to its lengt
 
 Hedging words signal lack of confidence and undermine authority even when the content is strong.
 
-**Flagged words (English):** I think, maybe, sort of, kind of, I guess, probably, hopefully, I believe, I suppose, perhaps, somewhat, fairly, rather, quite, I feel like
+**Flagged words (English):** Adapted to the interview language. English: I think, maybe, sort of, kind of, I guess, probably, hopefully, I believe, I suppose, perhaps. Russian, French, and German equivalents apply when the corresponding interview language is selected.
 
 **Scoring logic:**
 - One hedge in a long answer → acceptable
@@ -171,8 +171,7 @@ The 6 parameters weren't invented from scratch. They came from three sources: co
 
 ## Cultural context
 
-Cara is calibrated for the British and American professional markets, where direct, top-down communication is consistently rewarded at senior level — regardless of the candidate's cultural background.
-
+Cara is calibrated for English, French, German and Russian professional markets. Hedging thresholds and flagged vocabulary are adapted per interview language.
 If you're preparing for interviews in markets where hedging is a politeness norm rather than a confidence signal (parts of Asia, for example), treat the exec language score as directional rather than prescriptive.
 
 ---
