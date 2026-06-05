@@ -120,6 +120,8 @@ Discovered during first testing: re-parsing the CV and JD on every session was b
 | Web | Flask + HTML/CSS |
 | Storage | SQLite |
 | Export | Markdown (.md) |
+| Interview language | English · French · German · Russian |
+
 
 <img width="100%" height="2" src="https://img.shields.io/badge/--%20-E0F2F1?style=flat&labelColor=E0F2F1&color=E0F2F1"/>
 
