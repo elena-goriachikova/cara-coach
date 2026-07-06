@@ -176,7 +176,8 @@ Currently focused on AI agent strategy and agentic product design.
 
 [LinkedIn →](https://www.linkedin.com/in/elena-goriachikova-4a6b8b4/)
 
-## Related work
+<img src="https://img.shields.io/badge/Related%20work-00897B?style=for-the-badge"/>
+
 
 - [Sweepster](https://github.com/elena-goriachikova/sweepster) — explainable GenAI career intelligence and vacancy matching architecture.
 
